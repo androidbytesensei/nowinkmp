@@ -304,3 +304,8 @@ nowinandroid-android-room = { id = "nowinandroid.android.room" }
 nowinandroid-android-test = { id = "nowinandroid.android.test" }
 nowinandroid-hilt = { id = "nowinandroid.hilt" }
 nowinandroid-jvm-library = { id = "nowinandroid.jvm.library" }
+
+# KMP plugin definitions
+nowinandroid-kotlin-multiplatform-library = { id = "nowinandroid.kotlin.multiplatform.library" }
+nowinandroid-kotlin-multiplatform-koin = { id = "nowinandroid.kotlin.multiplatform.koin" }
+nowinandroid-compose-multiplatform-feature = { id = "nowinandroid.compose.multiplatform.feature" }

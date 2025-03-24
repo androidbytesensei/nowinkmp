@@ -114,5 +114,19 @@ gradlePlugin {
             id = libs.plugins.nowinandroid.jvm.library.get().pluginId
             implementationClass = "JvmLibraryConventionPlugin"
         }
+
+        // KMP & CMP Plugins
+        register("kotlinMultiplatformLibrary") {
+            id = libs.plugins.nowinandroid.kotlin.multiplatform.library.get().pluginId
+            implementationClass = "KMPLibraryConventionPlugin"
+        }
+        register("kotlinMultiplatformKoin") {
+            id = libs.plugins.nowinandroid.kotlin.multiplatform.koin.get().pluginId
+            implementationClass = "KMPKoinConventionPlugin"
+        }
+        register("composeMultiplatformFeature") {
+            id = libs.plugins.nowinandroid.compose.multiplatform.feature.get().pluginId
+            implementationClass = "CMPFeatureConventionPlugin"
+        }
     }
 }
