@@ -18,7 +18,7 @@ plugins {
     alias(libs.plugins.nowinandroid.android.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
     alias(libs.plugins.nowinandroid.android.room)
-    alias(libs.plugins.nowinandroid.hilt)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
 }
 
 android {
@@ -29,6 +29,7 @@ dependencies {
     api(projects.core.model)
 
     implementation(libs.kotlinx.datetime)
+    implementation(libs.koin.android)
 
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.runner)
