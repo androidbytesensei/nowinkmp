@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.network.di
+package com.google.samples.apps.nowinandroid.core.network
 
-import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.qualifier.named
-import org.koin.dsl.module
 
-val dispatchersModule = module {
-    single<CoroutineDispatcher>(named(NiaDispatchers.IO.name)) { Dispatchers.IO }
-    single<CoroutineDispatcher>(named(NiaDispatchers.Default.name)) { Dispatchers.Default }
+/**
+ * Extension function to get a dispatcher from Koin.
+ */
+fun KoinComponent.getDispatcher(dispatcher: NiaDispatchers): CoroutineDispatcher {
+    return get(dispatcher.asQualifier)
+}
+
+/**
+ * Extension function to get the application scope from Koin.
+ */
+fun KoinComponent.getApplicationScope(): CoroutineScope {
+    return get(named("ApplicationScope"))
 }
