@@ -16,14 +16,17 @@
 
 package com.google.samples.apps.nowinandroid.core.network
 
-import javax.inject.Qualifier
-import kotlin.annotation.AnnotationRetention.RUNTIME
-
-@Qualifier
-@Retention(RUNTIME)
-annotation class Dispatcher(val niaDispatcher: NiaDispatchers)
+import org.koin.core.qualifier.StringQualifier
+import org.koin.core.qualifier.named
 
 enum class NiaDispatchers {
     Default,
     IO,
 }
+
+/**
+ * Extension function to get a named qualifier for a dispatcher.
+ * This replaces the previous @Dispatcher annotation for Koin compatibility.
+ */
+val NiaDispatchers.asQualifier: StringQualifier
+    get() = named(this.name)
