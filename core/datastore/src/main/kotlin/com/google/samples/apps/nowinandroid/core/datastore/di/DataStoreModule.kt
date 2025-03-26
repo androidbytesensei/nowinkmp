@@ -16,44 +16,38 @@
 
 package com.google.samples.apps.nowinandroid.core.datastore.di
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
 import com.google.samples.apps.nowinandroid.core.datastore.IntToStringIdsMigration
+import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferencesDataSource
 import com.google.samples.apps.nowinandroid.core.datastore.UserPreferences
 import com.google.samples.apps.nowinandroid.core.datastore.UserPreferencesSerializer
-import com.google.samples.apps.nowinandroid.core.network.Dispatcher
-import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers.IO
-import com.google.samples.apps.nowinandroid.core.network.di.ApplicationScope
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DataStoreModule {
+val dataStoreModule = module {
+    single { UserPreferencesSerializer() }
+    singleOf(::NiaPreferencesDataSource)
+    single<DataStore<UserPreferences>> {
+        // Get IO dispatcher from the common module using the extension function
+        val ioDispatcher = get<CoroutineDispatcher>(named(NiaDispatchers.IO.name))
+        // Get application scope from the common module
+        val applicationScope = get<CoroutineScope>(named("ApplicationScope"))
 
-    @Provides
-    @Singleton
-    internal fun providesUserPreferencesDataStore(
-        @ApplicationContext context: Context,
-        @Dispatcher(IO) ioDispatcher: CoroutineDispatcher,
-        @ApplicationScope scope: CoroutineScope,
-        userPreferencesSerializer: UserPreferencesSerializer,
-    ): DataStore<UserPreferences> =
         DataStoreFactory.create(
-            serializer = userPreferencesSerializer,
-            scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
+            serializer = get<UserPreferencesSerializer>(),
+            scope = CoroutineScope(applicationScope.coroutineContext + ioDispatcher),
             migrations = listOf(
                 IntToStringIdsMigration,
             ),
         ) {
-            context.dataStoreFile("user_preferences.pb")
+            androidContext().dataStoreFile("user_preferences.pb")
         }
+    }
 }
