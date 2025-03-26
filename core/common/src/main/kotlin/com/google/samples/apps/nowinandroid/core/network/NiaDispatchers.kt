@@ -22,6 +22,7 @@ import org.koin.core.qualifier.named
 enum class NiaDispatchers {
     Default,
     IO,
+    Unconfined
 }
 
 /**

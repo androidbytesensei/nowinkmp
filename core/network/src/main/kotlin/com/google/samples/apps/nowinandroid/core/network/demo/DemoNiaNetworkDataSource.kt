@@ -33,7 +33,7 @@ import java.io.BufferedReader
 /**
  * [NiaNetworkDataSource] implementation that provides static news resources to aid development
  */
-class DemoNiaNetworkDataSource constructor(
+class DemoNiaNetworkDataSource(
     private val ioDispatcher: CoroutineDispatcher,
     private val networkJson: Json,
     private val assets: DemoAssetManager = JvmUnitTestDemoAssetManager,

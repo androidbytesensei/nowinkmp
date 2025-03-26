@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.nowinandroid.core.data.test
 
-import com.google.samples.apps.nowinandroid.core.data.di.DataModule
 import com.google.samples.apps.nowinandroid.core.data.repository.NewsRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.RecentSearchRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.SearchContentsRepository
@@ -29,47 +28,31 @@ import com.google.samples.apps.nowinandroid.core.data.test.repository.FakeTopics
 import com.google.samples.apps.nowinandroid.core.data.test.repository.FakeUserDataRepository
 import com.google.samples.apps.nowinandroid.core.data.util.NetworkMonitor
 import com.google.samples.apps.nowinandroid.core.data.util.TimeZoneMonitor
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.components.SingletonComponent
-import dagger.hilt.testing.TestInstallIn
+import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
+import com.google.samples.apps.nowinandroid.core.network.asQualifier
+import com.google.samples.apps.nowinandroid.core.network.demo.DemoNiaNetworkDataSource
+import kotlinx.coroutines.CoroutineDispatcher
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
-@Module
-@TestInstallIn(
-    components = [SingletonComponent::class],
-    replaces = [DataModule::class],
-)
-internal interface TestDataModule {
-    @Binds
-    fun bindsTopicRepository(
-        fakeTopicsRepository: FakeTopicsRepository,
-    ): TopicsRepository
+val testDataModule = module {
+    // Provide test dispatchers
+    single<CoroutineDispatcher> { get(NiaDispatchers.IO.asQualifier) }
 
-    @Binds
-    fun bindsNewsResourceRepository(
-        fakeNewsRepository: FakeNewsRepository,
-    ): NewsRepository
+    // Provide the DemoNiaNetworkDataSource needed by some fake repositories
+    single {
+        DemoNiaNetworkDataSource(
+            ioDispatcher = get(NiaDispatchers.IO.asQualifier),
+            networkJson = get(),
+        )
+    }
 
-    @Binds
-    fun bindsUserDataRepository(
-        userDataRepository: FakeUserDataRepository,
-    ): UserDataRepository
-
-    @Binds
-    fun bindsRecentSearchRepository(
-        recentSearchRepository: FakeRecentSearchRepository,
-    ): RecentSearchRepository
-
-    @Binds
-    fun bindsSearchContentsRepository(
-        searchContentsRepository: FakeSearchContentsRepository,
-    ): SearchContentsRepository
-
-    @Binds
-    fun bindsNetworkMonitor(
-        networkMonitor: AlwaysOnlineNetworkMonitor,
-    ): NetworkMonitor
-
-    @Binds
-    fun binds(impl: DefaultZoneIdTimeZoneMonitor): TimeZoneMonitor
+    singleOf(::AlwaysOnlineNetworkMonitor) bind NetworkMonitor::class
+    singleOf(::DefaultZoneIdTimeZoneMonitor) bind TimeZoneMonitor::class
+    singleOf(::FakeSearchContentsRepository) bind SearchContentsRepository::class
+    singleOf(::FakeRecentSearchRepository) bind RecentSearchRepository::class
+    singleOf(::FakeNewsRepository) bind NewsRepository::class
+    singleOf(::FakeTopicsRepository) bind TopicsRepository::class
+    singleOf(::FakeUserDataRepository) bind UserDataRepository::class
 }

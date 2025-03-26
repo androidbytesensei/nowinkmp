@@ -25,4 +25,5 @@ import org.koin.dsl.module
 val dispatchersModule = module {
     single<CoroutineDispatcher>(named(NiaDispatchers.IO.name)) { Dispatchers.IO }
     single<CoroutineDispatcher>(named(NiaDispatchers.Default.name)) { Dispatchers.Default }
+    single<CoroutineDispatcher>(named(NiaDispatchers.Unconfined.name)) { Dispatchers.Unconfined }
 }
