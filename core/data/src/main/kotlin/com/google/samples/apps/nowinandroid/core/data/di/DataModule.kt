@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.core.data.di
 
+import android.content.Context
 import com.google.samples.apps.nowinandroid.core.data.repository.DefaultRecentSearchRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.DefaultSearchContentsRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.NewsRepository
@@ -30,45 +31,36 @@ import com.google.samples.apps.nowinandroid.core.data.util.ConnectivityManagerNe
 import com.google.samples.apps.nowinandroid.core.data.util.NetworkMonitor
 import com.google.samples.apps.nowinandroid.core.data.util.TimeZoneBroadcastMonitor
 import com.google.samples.apps.nowinandroid.core.data.util.TimeZoneMonitor
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.google.samples.apps.nowinandroid.core.database.di.daosModule
+import com.google.samples.apps.nowinandroid.core.datastore.di.dataStoreModule
+import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
+import com.google.samples.apps.nowinandroid.core.network.asQualifier
+import com.google.samples.apps.nowinandroid.core.network.di.flavoredNetworkModule
+import com.google.samples.apps.nowinandroid.core.notifications.notificationsModule
+import kotlinx.coroutines.CoroutineDispatcher
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class DataModule {
+val dataModule = module {
+    includes(
+        userNewsResourceRepositoryModule,
+        daosModule,
+        dataStoreModule,
+        flavoredNetworkModule,
+        notificationsModule,
+    )
 
-    @Binds
-    internal abstract fun bindsTopicRepository(
-        topicsRepository: OfflineFirstTopicsRepository,
-    ): TopicsRepository
+    single<Context>{ androidContext() }
 
-    @Binds
-    internal abstract fun bindsNewsResourceRepository(
-        newsRepository: OfflineFirstNewsRepository,
-    ): NewsRepository
+    single<CoroutineDispatcher>{ get(NiaDispatchers.IO.asQualifier) }
 
-    @Binds
-    internal abstract fun bindsUserDataRepository(
-        userDataRepository: OfflineFirstUserDataRepository,
-    ): UserDataRepository
-
-    @Binds
-    internal abstract fun bindsRecentSearchRepository(
-        recentSearchRepository: DefaultRecentSearchRepository,
-    ): RecentSearchRepository
-
-    @Binds
-    internal abstract fun bindsSearchContentsRepository(
-        searchContentsRepository: DefaultSearchContentsRepository,
-    ): SearchContentsRepository
-
-    @Binds
-    internal abstract fun bindsNetworkMonitor(
-        networkMonitor: ConnectivityManagerNetworkMonitor,
-    ): NetworkMonitor
-
-    @Binds
-    internal abstract fun binds(impl: TimeZoneBroadcastMonitor): TimeZoneMonitor
+    singleOf(::ConnectivityManagerNetworkMonitor) bind NetworkMonitor::class
+    singleOf(::TimeZoneBroadcastMonitor) bind TimeZoneMonitor::class
+    singleOf(::DefaultSearchContentsRepository) bind SearchContentsRepository::class
+    singleOf(::DefaultRecentSearchRepository) bind RecentSearchRepository::class
+    singleOf(::OfflineFirstNewsRepository) bind NewsRepository::class
+    singleOf(::OfflineFirstTopicsRepository) bind TopicsRepository::class
+    singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
 }

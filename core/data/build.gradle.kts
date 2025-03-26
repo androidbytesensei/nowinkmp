@@ -16,7 +16,7 @@
 plugins {
     alias(libs.plugins.nowinandroid.android.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
-    alias(libs.plugins.nowinandroid.hilt)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
     id("kotlinx-serialization")
 }
 
@@ -37,6 +37,7 @@ dependencies {
 
     implementation(projects.core.analytics)
     implementation(projects.core.notifications)
+    implementation(libs.koin.android)
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
