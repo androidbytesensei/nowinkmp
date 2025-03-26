@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,11 @@
 
 package com.google.samples.apps.nowinandroid.core.domain
 
-import com.google.samples.apps.nowinandroid.core.data.model.RecentSearchQuery
-import com.google.samples.apps.nowinandroid.core.data.repository.RecentSearchRepository
-import kotlinx.coroutines.flow.Flow
+import org.koin.core.module.dsl.factoryOf
+import org.koin.dsl.module
 
-/**
- * A use case which returns the recent search queries.
- */
-class GetRecentSearchQueriesUseCase(
-    private val recentSearchRepository: RecentSearchRepository,
-) {
-    operator fun invoke(limit: Int = 10): Flow<List<RecentSearchQuery>> =
-        recentSearchRepository.getRecentSearchQueries(limit)
+val domainModule = module {
+    factoryOf(::GetFollowableTopicsUseCase)
+    factoryOf(::GetSearchContentsUseCase)
+    factoryOf(::GetRecentSearchQueriesUseCase)
 }

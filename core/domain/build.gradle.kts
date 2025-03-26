@@ -16,7 +16,7 @@
 plugins {
     alias(libs.plugins.nowinandroid.android.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
 }
 
 android {
@@ -26,8 +26,6 @@ android {
 dependencies {
     api(projects.core.data)
     api(projects.core.model)
-
-    implementation(libs.javax.inject)
 
     testImplementation(projects.core.testing)
 }
