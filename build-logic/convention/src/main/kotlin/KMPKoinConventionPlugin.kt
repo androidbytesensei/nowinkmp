@@ -28,13 +28,13 @@ class KMPKoinConventionPlugin : Plugin<Project> {
 
             dependencies {
                 val bom = libs.findLibrary("koin-bom").get()
-                add("commonMainImplementation", platform(bom))
-                add("commonMainImplementation", libs.findLibrary("koin.core").get())
+                add("implementation", platform(bom))
+                add("implementation", libs.findLibrary("koin.core").get())
 
-                add("commonMainImplementation", libs.findLibrary("koin.annotations").get())
-                add("kspCommonMainMetadata", libs.findLibrary("koin.ksp.compiler").get())
+                add("implementation", libs.findLibrary("koin.annotations").get())
+                add("ksp", libs.findLibrary("koin.ksp.compiler").get())
 
-                add("commonTestImplementation", libs.findLibrary("koin.test").get())
+                add("testImplementation", libs.findLibrary("koin.test").get())
             }
         }
     }
