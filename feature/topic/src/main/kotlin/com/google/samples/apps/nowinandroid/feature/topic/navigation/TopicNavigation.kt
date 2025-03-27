@@ -16,14 +16,11 @@
 
 package com.google.samples.apps.nowinandroid.feature.topic.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.google.samples.apps.nowinandroid.feature.topic.TopicScreen
-import com.google.samples.apps.nowinandroid.feature.topic.TopicViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable data class TopicRoute(val id: String)
@@ -39,17 +36,11 @@ fun NavGraphBuilder.topicScreen(
     onBackClick: () -> Unit,
     onTopicClick: (String) -> Unit,
 ) {
-    composable<TopicRoute> { entry ->
-        val id = entry.toRoute<TopicRoute>().id
+    composable<TopicRoute> {
         TopicScreen(
             showBackButton = showBackButton,
             onBackClick = onBackClick,
             onTopicClick = onTopicClick,
-            viewModel = hiltViewModel<TopicViewModel, TopicViewModel.Factory>(
-                key = id,
-            ) { factory ->
-                factory.create(id)
-            },
         )
     }
 }
