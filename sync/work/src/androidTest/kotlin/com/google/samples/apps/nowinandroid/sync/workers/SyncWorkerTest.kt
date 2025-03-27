@@ -23,18 +23,19 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
+import com.google.samples.apps.nowinandroid.core.testing.KoinTestRule
+import com.google.samples.apps.nowinandroid.sync.di.syncKoinModule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
-@HiltAndroidTest
 class SyncWorkerTest {
 
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
+    @get:Rule
+    val koinTestRule = KoinTestRule(
+        modules = listOf(syncKoinModule)
+    )
 
     private val context get() = InstrumentationRegistry.getInstrumentation().context
 
