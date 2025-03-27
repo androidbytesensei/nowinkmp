@@ -56,7 +56,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -74,13 +73,14 @@ import com.google.samples.apps.nowinandroid.core.ui.TrackScreenViewEvent
 import com.google.samples.apps.nowinandroid.core.ui.TrackScrollJank
 import com.google.samples.apps.nowinandroid.core.ui.UserNewsResourcePreviewParameterProvider
 import com.google.samples.apps.nowinandroid.core.ui.newsFeed
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun BookmarksRoute(
     onTopicClick: (String) -> Unit,
     onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
-    viewModel: BookmarksViewModel = hiltViewModel(),
+    viewModel: BookmarksViewModel = koinViewModel(),
 ) {
     val feedState by viewModel.feedUiState.collectAsStateWithLifecycle()
     BookmarksScreen(
