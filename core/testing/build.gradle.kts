@@ -15,7 +15,7 @@
  */
 plugins {
     alias(libs.plugins.nowinandroid.android.library)
-    alias(libs.plugins.nowinandroid.hilt)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
 }
 
 android {
@@ -32,6 +32,6 @@ dependencies {
 
 
     implementation(libs.androidx.test.rules)
-    implementation(libs.hilt.android.testing)
+    implementation(libs.koin.android.test)
     implementation(libs.kotlinx.datetime)
 }
