@@ -16,8 +16,10 @@
 
 package com.google.samples.apps.nowinandroid.feature.topic
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.google.samples.apps.nowinandroid.core.data.repository.NewsResourceQuery
 import com.google.samples.apps.nowinandroid.core.data.repository.TopicsRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.UserDataRepository
@@ -27,10 +29,7 @@ import com.google.samples.apps.nowinandroid.core.model.data.Topic
 import com.google.samples.apps.nowinandroid.core.model.data.UserNewsResource
 import com.google.samples.apps.nowinandroid.core.result.Result
 import com.google.samples.apps.nowinandroid.core.result.asResult
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.google.samples.apps.nowinandroid.feature.topic.navigation.TopicRoute
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -39,13 +38,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = TopicViewModel.Factory::class)
-class TopicViewModel @AssistedInject constructor(
+class TopicViewModel(
+    savedStateHandle: SavedStateHandle,
     private val userDataRepository: UserDataRepository,
     topicsRepository: TopicsRepository,
     userNewsResourceRepository: UserNewsResourceRepository,
-    @Assisted val topicId: String,
 ) : ViewModel() {
+    val topicId = savedStateHandle.toRoute<TopicRoute>().id
+
     val topicUiState: StateFlow<TopicUiState> = topicUiState(
         topicId = topicId,
         userDataRepository = userDataRepository,
@@ -84,13 +84,6 @@ class TopicViewModel @AssistedInject constructor(
         viewModelScope.launch {
             userDataRepository.setNewsResourceViewed(newsResourceId, viewed)
         }
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(
-            topicId: String,
-        ): TopicViewModel
     }
 }
 
