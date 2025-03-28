@@ -24,6 +24,7 @@ import com.google.samples.apps.nowinandroid.core.datastore.NiaPreferencesDataSou
 import com.google.samples.apps.nowinandroid.core.datastore.UserPreferences
 import com.google.samples.apps.nowinandroid.core.datastore.UserPreferencesSerializer
 import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
+import com.google.samples.apps.nowinandroid.core.network.di.coroutineScopesModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidContext
@@ -32,6 +33,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val dataStoreModule = module {
+    includes(coroutineScopesModule)
     single { UserPreferencesSerializer() }
     singleOf(::NiaPreferencesDataSource)
     single<DataStore<UserPreferences>> {

@@ -48,7 +48,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -56,13 +55,14 @@ import com.google.samples.apps.nowinandroid.feature.interests.InterestsRoute
 import com.google.samples.apps.nowinandroid.feature.interests.navigation.InterestsRoute
 import com.google.samples.apps.nowinandroid.feature.topic.TopicDetailPlaceholder
 import com.google.samples.apps.nowinandroid.feature.topic.TopicScreen
-import com.google.samples.apps.nowinandroid.feature.topic.TopicViewModel
 import com.google.samples.apps.nowinandroid.feature.topic.navigation.TopicRoute
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.math.max
 
-@Serializable internal object TopicPlaceholderRoute
+@Serializable
+internal object TopicPlaceholderRoute
 
 fun NavGraphBuilder.interestsListDetailScreen() {
     composable<InterestsRoute> {
@@ -72,7 +72,7 @@ fun NavGraphBuilder.interestsListDetailScreen() {
 
 @Composable
 internal fun InterestsListDetailScreen(
-    viewModel: Interests2PaneViewModel = hiltViewModel(),
+    viewModel: Interests2PaneViewModel = koinViewModel(),
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
 ) {
     val selectedTopicId by viewModel.selectedTopicId.collectAsStateWithLifecycle()
@@ -149,7 +149,8 @@ internal fun InterestsListDetailScreen(
         listPane = {
             AnimatedPane {
                 Box(
-                    modifier = Modifier.clipToBounds()
+                    modifier = Modifier
+                        .clipToBounds()
                         .layout { measurable, constraints ->
                             val width = max(minPaneWidth.roundToPx(), constraints.maxWidth)
                             val placeable = measurable.measure(
@@ -176,7 +177,8 @@ internal fun InterestsListDetailScreen(
         detailPane = {
             AnimatedPane {
                 Box(
-                    modifier = Modifier.clipToBounds()
+                    modifier = Modifier
+                        .clipToBounds()
                         .layout { measurable, constraints ->
                             val width = max(minPaneWidth.roundToPx(), constraints.maxWidth)
                             val placeable = measurable.measure(
@@ -205,13 +207,9 @@ internal fun InterestsListDetailScreen(
                                         }
                                     },
                                     onTopicClick = ::onTopicClickShowDetailPane,
-                                    viewModel = hiltViewModel<TopicViewModel, TopicViewModel.Factory>(
-                                        key = route.id,
-                                    ) { factory ->
-                                        factory.create(route.id)
-                                    },
                                 )
                             }
+
                             is TopicPlaceholderRoute -> {
                                 TopicDetailPlaceholder()
                             }

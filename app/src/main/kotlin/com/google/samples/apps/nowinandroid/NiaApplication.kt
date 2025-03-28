@@ -22,33 +22,44 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.google.samples.apps.nowinandroid.di.appModule
 import com.google.samples.apps.nowinandroid.sync.initializers.Sync
 import com.google.samples.apps.nowinandroid.util.ProfileVerifierLogger
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.androix.startup.KoinStartup
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.dsl.KoinConfiguration
+import org.koin.dsl.koinConfiguration
 
 /**
  * [Application] class for NiA
  */
-@HiltAndroidApp
-class NiaApplication : Application(), ImageLoaderFactory {
-    @Inject
-    lateinit var imageLoader: dagger.Lazy<ImageLoader>
+@OptIn(KoinExperimentalAPI::class)
+class NiaApplication : Application(), ImageLoaderFactory, KoinStartup {
+    private val imageLoader: ImageLoader by inject()
+    val profileVerifierLogger: ProfileVerifierLogger by inject()
 
-    @Inject
-    lateinit var profileVerifierLogger: ProfileVerifierLogger
+    @KoinExperimentalAPI
+    override fun onKoinStartup(): KoinConfiguration = koinConfiguration {
+        androidContext(this@NiaApplication)
+        androidLogger()
+        workManagerFactory()
+        modules(appModule)
+    }
 
     override fun onCreate() {
         super.onCreate()
-
-        setStrictModePolicy()
+//        setStrictModePolicy()
 
         // Initialize Sync; the system responsible for keeping data in the app up to date.
         Sync.initialize(context = this)
         profileVerifierLogger()
     }
 
-    override fun newImageLoader(): ImageLoader = imageLoader.get()
+    override fun newImageLoader(): ImageLoader = imageLoader
 
     /**
      * Return true if the application is debuggable.

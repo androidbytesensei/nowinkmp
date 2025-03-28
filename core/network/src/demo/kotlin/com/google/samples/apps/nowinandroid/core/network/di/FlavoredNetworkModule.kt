@@ -23,5 +23,5 @@ import org.koin.dsl.module
 val flavoredNetworkModule = module {
     includes(networkModule)
 
-    single<NiaNetworkDataSource> { DemoNiaNetworkDataSource(get(),get(),get()) }
+    single<NiaNetworkDataSource> { DemoNiaNetworkDataSource(get(), get(), get()) }
 }

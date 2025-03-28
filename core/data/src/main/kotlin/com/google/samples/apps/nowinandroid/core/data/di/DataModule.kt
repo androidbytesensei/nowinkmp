@@ -35,16 +35,18 @@ import com.google.samples.apps.nowinandroid.core.database.di.daosModule
 import com.google.samples.apps.nowinandroid.core.datastore.di.dataStoreModule
 import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
 import com.google.samples.apps.nowinandroid.core.network.asQualifier
+import com.google.samples.apps.nowinandroid.core.network.di.coroutineScopesModule
 import com.google.samples.apps.nowinandroid.core.network.di.flavoredNetworkModule
 import com.google.samples.apps.nowinandroid.core.notifications.notificationsModule
 import kotlinx.coroutines.CoroutineDispatcher
-import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val dataModule = module {
     includes(
+        coroutineScopesModule,
         userNewsResourceRepositoryModule,
         daosModule,
         dataStoreModule,
@@ -52,9 +54,9 @@ val dataModule = module {
         notificationsModule,
     )
 
-    single<Context>{ androidContext() }
+    single<Context> { androidApplication() }
 
-    single<CoroutineDispatcher>{ get(NiaDispatchers.IO.asQualifier) }
+    single<CoroutineDispatcher> { get(NiaDispatchers.IO.asQualifier) }
 
     singleOf(::ConnectivityManagerNetworkMonitor) bind NetworkMonitor::class
     singleOf(::TimeZoneBroadcastMonitor) bind TimeZoneMonitor::class

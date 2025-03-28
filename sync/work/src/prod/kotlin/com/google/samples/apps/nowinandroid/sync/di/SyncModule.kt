@@ -19,6 +19,7 @@ package com.google.samples.apps.nowinandroid.sync.di
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.messaging
+import com.google.samples.apps.nowinandroid.core.data.di.dataModule
 import com.google.samples.apps.nowinandroid.core.data.util.SyncManager
 import com.google.samples.apps.nowinandroid.sync.status.FirebaseSyncSubscriber
 import com.google.samples.apps.nowinandroid.sync.status.SyncSubscriber
@@ -30,6 +31,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val syncKoinModule = module {
+    includes(dataModule)
+
     singleOf(::WorkManagerSyncManager) bind SyncManager::class
     singleOf(::FirebaseSyncSubscriber) bind SyncSubscriber::class
     single<FirebaseMessaging> { Firebase.messaging }

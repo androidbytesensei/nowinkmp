@@ -29,7 +29,7 @@ import org.koin.test.KoinTest
  * JUnit rule to initialize Koin for tests.
  */
 class KoinTestRule(
-    private val modules: List<Module>
+    private val modules: List<Module>,
 ) : TestWatcher(), KoinTest {
 
     override fun starting(description: Description) {

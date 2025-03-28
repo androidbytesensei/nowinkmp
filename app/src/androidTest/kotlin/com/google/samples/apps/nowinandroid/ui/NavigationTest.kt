@@ -39,14 +39,14 @@ import com.google.samples.apps.nowinandroid.core.data.repository.NewsRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.TopicsRepository
 import com.google.samples.apps.nowinandroid.core.model.data.Topic
 import com.google.samples.apps.nowinandroid.core.rules.GrantPostNotificationsPermissionRule
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
+import com.google.samples.apps.nowinandroid.core.testing.KoinTestRule
+import com.google.samples.apps.nowinandroid.core.testing.di.testModule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import javax.inject.Inject
+import org.koin.core.component.inject
+import org.koin.test.KoinTest
 import com.google.samples.apps.nowinandroid.feature.bookmarks.R as BookmarksR
 import com.google.samples.apps.nowinandroid.feature.foryou.R as FeatureForyouR
 import com.google.samples.apps.nowinandroid.feature.search.R as FeatureSearchR
@@ -55,14 +55,15 @@ import com.google.samples.apps.nowinandroid.feature.settings.R as SettingsR
 /**
  * Tests all the navigation flows that are handled by the navigation library.
  */
-@HiltAndroidTest
-class NavigationTest {
+class NavigationTest : KoinTest {
 
     /**
      * Manages the components' state and is used to perform injection on your test
      */
     @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
+    val hiltRule = KoinTestRule(
+        listOf(testModule),
+    )
 
     /**
      * Grant [android.Manifest.permission.POST_NOTIFICATIONS] permission.
@@ -76,11 +77,9 @@ class NavigationTest {
     @get:Rule(order = 2)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    @Inject
-    lateinit var topicsRepository: TopicsRepository
+    private val topicsRepository: TopicsRepository by inject()
 
-    @Inject
-    lateinit var newsRepository: NewsRepository
+    private val newsRepository: NewsRepository by inject()
 
     // The strings used for matching in these tests
     private val navigateUp by composeTestRule.stringResource(FeatureForyouR.string.feature_foryou_navigate_up)
@@ -92,9 +91,6 @@ class NavigationTest {
     private val settings by composeTestRule.stringResource(SettingsR.string.feature_settings_top_app_bar_action_icon_description)
     private val brand by composeTestRule.stringResource(SettingsR.string.feature_settings_brand_android)
     private val ok by composeTestRule.stringResource(SettingsR.string.feature_settings_dismiss_dialog_button_text)
-
-    @Before
-    fun setup() = hiltRule.inject()
 
     @Test
     fun firstScreen_isForYou() {

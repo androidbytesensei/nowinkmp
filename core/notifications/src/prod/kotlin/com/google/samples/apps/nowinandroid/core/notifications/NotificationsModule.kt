@@ -23,7 +23,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val notificationsModule = module {
-    single<Context>{ androidContext() }
+    single<Context> { androidContext() }
     singleOf(::SystemTrayNotifier) bind Notifier::class
 }
-
