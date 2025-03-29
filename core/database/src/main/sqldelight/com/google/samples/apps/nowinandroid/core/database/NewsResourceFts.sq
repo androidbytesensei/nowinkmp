@@ -1,0 +1,26 @@
+CREATE VIRTUAL TABLE newsResourcesFts
+USING FTS4(
+    news_resource_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL
+);
+-- Triggers to keep the FTS index up to date.
+CREATE TRIGGER news_resource_ai AFTER INSERT ON newsResources BEGIN
+    INSERT INTO newsResourcesFts (rowid, news_resource_id, title, content) VALUES (new.rowid, new.id, new.title, new.content);
+END;
+CREATE TRIGGER news_resource_ad AFTER DELETE ON newsResources BEGIN
+    DELETE FROM newsResourcesFts WHERE news_resource_id = old.id;
+END;
+CREATE TRIGGER news_resource_au AFTER UPDATE ON newsResources BEGIN
+    DELETE FROM newsResourcesFts WHERE news_resource_id = old.id;
+    INSERT INTO newsResourcesFts (news_resource_id, title, content) VALUES (new.id, new.title, new.content);
+END;
+
+insert:
+INSERT INTO newsResourcesFts (news_resource_id, title, content) VALUES (:news_resource_id, :title, :content);
+
+searchAllNewsResources:
+SELECT news_resource_id FROM newsResourcesFts WHERE newsResourcesFts.title MATCH :query;
+
+getCount:
+SELECT count(*) FROM newsResourcesFts;
