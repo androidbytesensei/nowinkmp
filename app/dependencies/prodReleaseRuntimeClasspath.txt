@@ -139,6 +139,15 @@ androidx.window:window-core:1.3.0
 androidx.window:window:1.3.0
 androidx.work:work-runtime-ktx:2.10.0
 androidx.work:work-runtime:2.10.0
+app.cash.sqldelight:android-driver:2.0.2
+app.cash.sqldelight:async-extensions-jvm:2.0.2
+app.cash.sqldelight:async-extensions:2.0.2
+app.cash.sqldelight:coroutines-extensions-jvm:2.0.2
+app.cash.sqldelight:coroutines-extensions:2.0.2
+app.cash.sqldelight:primitive-adapters-jvm:2.0.2
+app.cash.sqldelight:primitive-adapters:2.0.2
+app.cash.sqldelight:runtime-jvm:2.0.2
+app.cash.sqldelight:runtime:2.0.2
 co.touchlab:stately-concurrency-jvm:2.1.0
 co.touchlab:stately-concurrency:2.1.0
 co.touchlab:stately-concurrent-collections-jvm:2.1.0
