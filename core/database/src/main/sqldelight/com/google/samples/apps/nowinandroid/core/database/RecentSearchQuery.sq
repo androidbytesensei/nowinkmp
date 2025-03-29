@@ -1,0 +1,13 @@
+CREATE TABLE recentSearchQueries (
+    query TEXT NOT NULL PRIMARY KEY,
+    queriedDate INTEGER DEFAULT CURRENT_TIMESTAMP
+);
+
+getRecentSearchQueryEntities:
+SELECT * FROM recentSearchQueries ORDER BY queriedDate DESC LIMIT :limit;
+
+insertOrReplaceRecentSearchQuery:
+INSERT OR REPLACE INTO recentSearchQueries (query) VALUES :query;
+
+clearRecentSearchQueries:
+DELETE FROM recentSearchQueries;

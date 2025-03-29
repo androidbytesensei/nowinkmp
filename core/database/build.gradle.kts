@@ -17,7 +17,7 @@
 plugins {
     alias(libs.plugins.nowinandroid.android.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
-    alias(libs.plugins.nowinandroid.android.room)
+    alias(libs.plugins.nowinandroid.sqldelight)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
 }
 

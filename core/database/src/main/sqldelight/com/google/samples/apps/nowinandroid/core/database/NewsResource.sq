@@ -1,0 +1,114 @@
+CREATE TABLE newsResources (
+  id TEXT NOT NULL PRIMARY KEY,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  url TEXT NOT NULL,
+  header_image_url TEXT,
+  publish_date INTEGER NOT NULL,
+  type TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS news_resources_topics (
+    news_resource_id TEXT NOT NULL,
+    topic_id TEXT NOT NULL,
+    PRIMARY KEY (news_resource_id, topic_id),
+    FOREIGN KEY (news_resource_id) REFERENCES newsResources(id) ON DELETE CASCADE,
+    FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_news_resource_id ON news_resources_topics(news_resource_id);
+
+CREATE INDEX idx_topic_id ON news_resources_topics(topic_id);
+
+getNewsResources:
+SELECT * FROM newsResources
+WHERE
+    CASE WHEN :useFilterNewsIds
+        THEN id IN :filterNewsIds
+        ELSE 1
+    END
+ AND
+    CASE WHEN :useFilterTopicIds
+        THEN id IN
+            (
+                SELECT news_resource_id FROM news_resources_topics
+                WHERE topic_id IN :filterTopicIds
+            )
+        ELSE 1
+    END
+ORDER BY publish_date DESC;
+
+getNewsResourceIds:
+SELECT id FROM newsResources
+WHERE
+    CASE WHEN :useFilterNewsIds
+        THEN id IN :filterNewsIds
+        ELSE 1
+    END
+ AND
+    CASE WHEN :useFilterTopicIds
+        THEN id IN
+            (
+                SELECT news_resource_id FROM news_resources_topics
+                WHERE topic_id IN :filterTopicIds
+            )
+        ELSE 1
+    END
+ORDER BY publish_date DESC;
+
+upsertNewsResources:
+INSERT INTO newsResources (id, title, content, url, header_image_url, publish_date, type)
+VALUES (?, ?, ?, ?, ?, ?, ?)
+ON CONFLICT(id) DO UPDATE SET
+title = excluded.title,
+content = excluded.content,
+url = excluded.url,
+header_image_url = excluded.header_image_url,
+publish_date = excluded.publish_date,
+type = excluded.type;
+
+insertOrIgnoreNewsResource:
+INSERT OR IGNORE INTO newsResources (id, title, content, url, header_image_url, publish_date, type)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+insertOrIgnoreTopicCrossRefEntitiy:
+INSERT OR IGNORE INTO news_resources_topics (news_resource_id, topic_id)
+VALUES (?, ?);
+
+deleteNewsResources:
+DELETE FROM newsResources WHERE id IN :ids;
+
+-- Basic query for all news resources
+getAllNewsResources:
+SELECT * FROM newsResources
+ORDER BY publish_date DESC;
+
+-- Get news resources filtered by IDs
+getNewsResourcesByIds:
+SELECT * FROM newsResources
+WHERE id IN :ids
+ORDER BY publish_date DESC;
+
+-- Get news resources filtered by topic IDs
+getNewsResourcesByTopicIds:
+SELECT DISTINCT newsResources.*
+FROM newsResources
+JOIN news_resources_topics ON newsResources.id = news_resources_topics.news_resource_id
+WHERE news_resources_topics.topic_id IN ?
+ORDER BY newsResources.publish_date DESC;
+
+-- Get news resources filtered by both news IDs and topic IDs
+getNewsResourcesByIdsAndTopicIds:
+SELECT DISTINCT newsResources.*
+FROM newsResources
+JOIN news_resources_topics ON newsResources.id = news_resources_topics.news_resource_id
+WHERE newsResources.id IN ?
+AND news_resources_topics.topic_id IN ?
+ORDER BY newsResources.publish_date DESC;
+
+-- Get topics for a specific news resource
+getTopicsForNewsResource:
+SELECT topics.*
+FROM topics
+JOIN news_resources_topics ON topics.id = news_resources_topics.topic_id
+WHERE news_resources_topics.news_resource_id = ?;

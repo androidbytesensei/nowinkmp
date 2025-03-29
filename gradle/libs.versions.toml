@@ -67,6 +67,7 @@ ktorfit = "2.2.0"
 ktorfitKsp = "2.2.0-1.0.29"
 
 # KMP Dependencies
+sqldelight = "2.0.2"
 koin = "4.0.2"
 koinAnnotationsVersion = "1.4.0-RC4"
 
@@ -183,6 +184,13 @@ truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 # KMP Dependencies
+# SQLDelight dependencies
+sqldelight-android-driver = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
+sqldelight-native-driver = { group = "app.cash.sqldelight", name = "native-driver", version.ref = "sqldelight" }
+sqldelight-sqlite-driver = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
+sqldelight-webworker-driver = { group = "app.cash.sqldelight", name = "web-worker-driver", version.ref = "sqldelight" }
+sqldelight-coroutines-extensions = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-primitive-adapters = { group = "app.cash.sqldelight", name = "primitive-adapters", version.ref = "sqldelight" }
 
 # jb Compose
 jb-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -263,6 +271,7 @@ firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "per
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+sqldelight-gradlePlugin = { group = "app.cash.sqldelight", name = "gradle-plugin", version.ref = "sqldelight" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -283,6 +292,7 @@ module-graph = { id = "com.jraska.module.graph.assertion", version.ref = "module
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 room = { id = "androidx.room", version.ref = "room" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 
 # KMP & CMP Plugins
@@ -311,3 +321,4 @@ nowinandroid-jvm-library = { id = "nowinandroid.jvm.library" }
 nowinandroid-kotlin-multiplatform-library = { id = "nowinandroid.kotlin.multiplatform.library" }
 nowinandroid-kotlin-multiplatform-koin = { id = "nowinandroid.kotlin.multiplatform.koin" }
 nowinandroid-compose-multiplatform-feature = { id = "nowinandroid.compose.multiplatform.feature" }
+nowinandroid-sqldelight = { id = "nowinandroid.sqldelight" }

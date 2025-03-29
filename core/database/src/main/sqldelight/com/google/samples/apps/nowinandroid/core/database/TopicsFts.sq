@@ -1,0 +1,41 @@
+CREATE VIRTUAL TABLE IF NOT EXISTS topicsFts
+USING FTS4(
+    topicId TEXT,
+    name TEXT,
+    shortDescription TEXT,
+    longDescription TEXT
+);
+
+CREATE TRIGGER IF NOT EXISTS topic_ai AFTER INSERT ON topics
+BEGIN
+    INSERT INTO topicsFts (topicId, name, shortDescription, longDescription)
+    VALUES (new.id, new.name, new.short_description, new.long_description);
+END;
+
+CREATE TRIGGER IF NOT EXISTS topic_ad AFTER DELETE ON topics
+BEGIN
+    DELETE FROM topicsFts WHERE topicId = old.id;
+END;
+
+CREATE TRIGGER IF NOT EXISTS topic_au AFTER UPDATE ON topics
+BEGIN
+    UPDATE topicsFts SET
+    name = new.name,
+    shortDescription = new.short_description,
+    longDescription = new.long_description
+    WHERE topicId = new.id;
+END;
+
+insert:
+INSERT INTO topicsFts (topicId, name, shortDescription, longDescription)
+VALUES (?, ?, ?, ?)
+ON CONFLICT(topicId) DO UPDATE SET
+name = excluded.name,
+shortDescription = excluded.shortDescription,
+longDescription = excluded.longDescription;
+
+searchAllTopics:
+SELECT topicId FROM topicsFts WHERE topicsFts MATCH :query;
+
+getCount:
+SELECT count(*) FROM topicsFts;

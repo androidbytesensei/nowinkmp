@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.database.model
+package com.google.samples.apps.nowinandroid.core.database.mapper
 
 /**
- * Fts entity for the news resources. See https://developer.android.com/reference/androidx/room/Fts4.
+ * Interface for mapping between database and domain entities.
  */
-data class NewsResourceFtsEntity(
+interface EntityMapper<DB : Any, Domain : Any> {
+    /**
+     * Maps a database entity to a domain entity.
+     */
+    fun mapToDomain(entity: DB): Domain
 
-    val newsResourceId: String,
-
-    val title: String,
-
-    val content: String,
-)
+    /**
+     * Maps a domain entity to database parameters.
+     */
+    fun mapToEntity(domain: Domain): DB
+}
