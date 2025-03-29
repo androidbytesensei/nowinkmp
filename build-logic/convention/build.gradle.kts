@@ -45,6 +45,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
+    compileOnly(libs.sqldelight.gradlePlugin)
     implementation(libs.truth)
     lintChecks(libs.androidx.lint.gradle)
 }
@@ -127,6 +128,10 @@ gradlePlugin {
         register("composeMultiplatformFeature") {
             id = libs.plugins.nowinandroid.compose.multiplatform.feature.get().pluginId
             implementationClass = "CMPFeatureConventionPlugin"
+        }
+        register("sqlDelight") {
+            id = libs.plugins.nowinandroid.sqldelight.get().pluginId
+            implementationClass = "SQLDelightConventionPlugin"
         }
     }
 }
