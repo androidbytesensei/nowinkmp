@@ -16,9 +16,12 @@
 
 package com.google.samples.apps.nowinandroid.feature.foryou
 
+import com.google.samples.apps.nowinandroid.core.data.di.dataModule
+import com.google.samples.apps.nowinandroid.core.domain.domainModule
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val forYouModule = module {
+    includes(dataModule, domainModule)
     viewModelOf(::ForYouViewModel)
 }

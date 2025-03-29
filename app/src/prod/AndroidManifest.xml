@@ -22,5 +22,8 @@
             tools:replace="android:value"
             android:name="firebase_analytics_collection_deactivated"
             android:value="false" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
     </application>
 </manifest>

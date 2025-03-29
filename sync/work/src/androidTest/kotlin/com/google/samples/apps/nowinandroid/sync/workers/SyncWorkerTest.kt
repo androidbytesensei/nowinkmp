@@ -34,7 +34,7 @@ class SyncWorkerTest {
 
     @get:Rule
     val koinTestRule = KoinTestRule(
-        modules = listOf(syncKoinModule)
+        modules = listOf(syncKoinModule),
     )
 
     private val context get() = InstrumentationRegistry.getInstrumentation().context

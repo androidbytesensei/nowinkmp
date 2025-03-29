@@ -16,7 +16,9 @@
 
 package com.google.samples.apps.nowinandroid.sync.di
 
+import com.google.samples.apps.nowinandroid.core.data.di.dataModule
 import com.google.samples.apps.nowinandroid.core.data.util.SyncManager
+import com.google.samples.apps.nowinandroid.core.network.di.coroutineScopesModule
 import com.google.samples.apps.nowinandroid.sync.status.StubSyncSubscriber
 import com.google.samples.apps.nowinandroid.sync.status.SyncSubscriber
 import com.google.samples.apps.nowinandroid.sync.status.WorkManagerSyncManager
@@ -27,7 +29,10 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val syncModule = module {
+    includes(coroutineScopesModule, dataModule)
+
     singleOf(::WorkManagerSyncManager) bind SyncManager::class
     singleOf(::StubSyncSubscriber) bind SyncSubscriber::class
+
     workerOf(::SyncWorker)
 }

@@ -18,32 +18,37 @@ package com.google.samples.apps.nowinandroid.di
 
 import android.app.Activity
 import android.util.Log
-import android.view.Window
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.JankStats.OnFrameListener
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import com.google.samples.apps.nowinandroid.MainActivityViewModel
+import com.google.samples.apps.nowinandroid.ui.interests2pane.Interests2PaneViewModel
+import com.google.samples.apps.nowinandroid.util.ProfileVerifierLogger
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(ActivityComponent::class)
-object JankStatsModule {
-    @Provides
-    fun providesOnFrameListener(): OnFrameListener = OnFrameListener { frameData ->
-        // Make sure to only log janky frames.
-        if (frameData.isJank) {
-            // We're currently logging this but would better report it to a backend.
-            Log.v("NiA Jank", frameData.toString())
-        }
+val jankStatsModule = module {
+    single<CoroutineScope> {
+        CoroutineScope(SupervisorJob() + Dispatchers.Default)
     }
+    viewModelOf(::MainActivityViewModel)
+    viewModelOf(::Interests2PaneViewModel)
+    singleOf(::ProfileVerifierLogger)
+    factory { (activity: Activity) ->
+        JankStats.createAndTrack(
+            activity.window,
+            providesOnFrameListener(),
+        )
+    }
+}
 
-    @Provides
-    fun providesWindow(activity: Activity): Window = activity.window
-
-    @Provides
-    fun providesJankStats(
-        window: Window,
-        frameListener: OnFrameListener,
-    ): JankStats = JankStats.createAndTrack(window, frameListener)
+fun providesOnFrameListener(): OnFrameListener = OnFrameListener { frameData ->
+    // Make sure to only log janky frames.
+    if (frameData.isJank) {
+        // We're currently logging this but would better report it to a backend.
+        Log.v("NiA Jank", frameData.toString())
+    }
 }

@@ -24,5 +24,5 @@ import org.koin.dsl.module
 val flavoredNetworkModule = module {
     includes(networkModule)
 
-    single { RetrofitNiaNetwork(get(),inject()) } bind NiaNetworkDataSource::class
+    single { RetrofitNiaNetwork(get(), inject()) } bind NiaNetworkDataSource::class
 }

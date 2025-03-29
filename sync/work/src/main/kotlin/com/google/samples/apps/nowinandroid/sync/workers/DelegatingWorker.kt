@@ -29,4 +29,3 @@ internal fun KClass<out CoroutineWorker>.delegatedData() =
     Data.Builder()
         .putString(WORKER_CLASS_NAME, qualifiedName)
         .build()
-

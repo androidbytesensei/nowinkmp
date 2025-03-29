@@ -20,8 +20,8 @@ plugins {
     alias(libs.plugins.nowinandroid.android.application.compose)
     alias(libs.plugins.nowinandroid.android.application.flavors)
     alias(libs.plugins.nowinandroid.android.application.jacoco)
-    alias(libs.plugins.nowinandroid.android.application.firebase)
-    alias(libs.plugins.nowinandroid.hilt)
+//    alias(libs.plugins.nowinandroid.android.application.firebase)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
     id("com.google.android.gms.oss-licenses-plugin")
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.roborazzi)
@@ -35,7 +35,7 @@ android {
         versionName = "0.1.2" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
         // Custom test runner to set up Hilt dependency graph
-        testInstrumentationRunner = "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
+        testInstrumentationRunner = "com.google.samples.apps.nowinandroid.core.testing.KoinTestRunner"
     }
 
     buildTypes {
@@ -85,6 +85,13 @@ dependencies {
     implementation(projects.core.analytics)
     implementation(projects.sync.work)
 
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.koin.androidx.startup)
+    implementation(libs.koin.androidx.workmanager)
+
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.adaptive)
@@ -94,7 +101,6 @@ dependencies {
     implementation(libs.androidx.compose.runtime.tracing)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.core.splashscreen)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.profileinstaller)
@@ -104,16 +110,12 @@ dependencies {
     implementation(libs.coil.kt)
     implementation(libs.kotlinx.serialization.json)
 
-    ksp(libs.hilt.compiler)
-
     debugImplementation(libs.androidx.compose.ui.testManifest)
     debugImplementation(projects.uiTestHiltManifest)
 
-    kspTest(libs.hilt.compiler)
-
     testImplementation(projects.core.dataTest)
     testImplementation(projects.core.datastoreTest)
-    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.koin.test)
     testImplementation(projects.sync.syncTest)
     testImplementation(libs.kotlin.test)
 
@@ -128,7 +130,7 @@ dependencies {
     androidTestImplementation(projects.core.datastoreTest)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test)
-    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.koin.android.test)
     androidTestImplementation(libs.kotlin.test)
 
     baselineProfile(projects.benchmarks)
