@@ -129,7 +129,7 @@ class NewsResourceDaoImpl(
     }
 
     override suspend fun deleteNewsResources(ids: List<String>) {
-        withContext(dispatcher){
+        withContext(dispatcher) {
             query.deleteNewsResources(ids)
         }
     }

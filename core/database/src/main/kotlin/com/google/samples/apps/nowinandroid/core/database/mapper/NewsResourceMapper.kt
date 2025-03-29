@@ -20,7 +20,7 @@ import com.google.samples.apps.nowinandroid.core.database.NewsResources
 import com.google.samples.apps.nowinandroid.core.database.model.NewsResourceEntity
 import kotlinx.datetime.Instant
 
-class NewsResourceMapper: EntityMapper<NewsResources, NewsResourceEntity>{
+class NewsResourceMapper : EntityMapper<NewsResources, NewsResourceEntity> {
     override fun mapToDomain(entity: NewsResources): NewsResourceEntity {
         return NewsResourceEntity(
             id = entity.id,
@@ -29,7 +29,7 @@ class NewsResourceMapper: EntityMapper<NewsResources, NewsResourceEntity>{
             url = entity.url,
             headerImageUrl = entity.header_image_url,
             publishDate = Instant.fromEpochMilliseconds(entity.publish_date),
-            type = entity.type
+            type = entity.type,
         )
     }
 
@@ -41,7 +41,7 @@ class NewsResourceMapper: EntityMapper<NewsResources, NewsResourceEntity>{
             url = domain.url,
             header_image_url = domain.headerImageUrl,
             publish_date = domain.publishDate.toEpochMilliseconds(),
-            type = domain.type
+            type = domain.type,
         )
     }
 }

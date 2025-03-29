@@ -19,7 +19,7 @@ package com.google.samples.apps.nowinandroid.core.database.mapper
 /**
  * Interface for mapping between database and domain entities.
  */
-interface EntityMapper<DB: Any, Domain: Any> {
+interface EntityMapper<DB : Any, Domain : Any> {
     /**
      * Maps a database entity to a domain entity.
      */

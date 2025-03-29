@@ -32,7 +32,7 @@ import kotlinx.coroutines.withContext
  */
 class SQLDelightAdapter<DB : Any, Domain : Any>(
     private val entityMapper: EntityMapper<DB, Domain>,
-    private val dispatcher: CoroutineDispatcher
+    private val dispatcher: CoroutineDispatcher,
 ) {
     /**
      * Maps a query result to a Flow of a single domain entity.
