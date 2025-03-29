@@ -24,8 +24,8 @@ class TopicsMapper : EntityMapper<Topics, TopicEntity> {
         return TopicEntity(
             id = entity.id,
             name = entity.name,
-            shortDescription = entity.short_description,
-            longDescription = entity.long_description,
+            shortDescription = entity.shortDescription,
+            longDescription = entity.longDescription,
             url = entity.url,
             imageUrl = entity.image_url,
         )
@@ -35,8 +35,8 @@ class TopicsMapper : EntityMapper<Topics, TopicEntity> {
         return Topics(
             id = domain.id,
             name = domain.name,
-            short_description = domain.shortDescription,
-            long_description = domain.longDescription,
+            shortDescription = domain.shortDescription,
+            longDescription = domain.longDescription,
             url = domain.url,
             image_url = domain.imageUrl,
         )
