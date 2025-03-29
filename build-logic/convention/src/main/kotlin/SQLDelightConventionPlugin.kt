@@ -39,6 +39,7 @@ class SQLDelightConventionPlugin : Plugin<Project> {
                     // Enable migration validation
                     verifyMigrations.set(true)
                     dialect("app.cash.sqldelight:sqlite-3-38-dialect:2.0.2")
+                    generateAsync.set(true)
                 }
                 linkSqlite.set(true)
             }

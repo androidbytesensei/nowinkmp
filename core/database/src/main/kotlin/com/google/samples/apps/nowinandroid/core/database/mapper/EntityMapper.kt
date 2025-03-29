@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.database.di
+package com.google.samples.apps.nowinandroid.core.database.mapper
 
-import androidx.room.Room
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
+/**
+ * Interface for mapping between database and domain entities.
+ */
+interface EntityMapper<DB: Any, Domain: Any> {
+    /**
+     * Maps a database entity to a domain entity.
+     */
+    fun mapToDomain(entity: DB): Domain
 
-val databaseModule = module {
-    single<NiaDatabase> {
-        Room.databaseBuilder(
-            androidContext(),
-            NiaDatabase::class.java,
-            "nia-database",
-        ).build()
-    }
+    /**
+     * Maps a domain entity to database parameters.
+     */
+    fun mapToEntity(domain: Domain): DB
 }

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.nowinandroid.core.database.di
 
-import com.google.samples.apps.nowinandroid.core.database.NiaDatabase
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
 
