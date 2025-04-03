@@ -14,12 +14,24 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.jvm.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
 }
 
-dependencies {
-    implementation(libs.kotlinx.coroutines.core)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
+android {
+    namespace = "com.google.samples.apps.nowinandroid.core"
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+            // Add Koin KMP Dependency
+            implementation(libs.koin.core)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.turbine)
+        }
+    }
 }
