@@ -19,7 +19,7 @@ plugins {
 }
 
 android {
-    namespace = "com.google.samples.apps.nowinandroid.core.model"
+    namespace = "com.google.samples.apps.nowinandroid.core.model.data"
 }
 
 kotlin {
