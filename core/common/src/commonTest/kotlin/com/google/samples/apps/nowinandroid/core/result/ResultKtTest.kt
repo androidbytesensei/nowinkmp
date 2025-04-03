@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 package com.google.samples.apps.nowinandroid.core.result
 
 import app.cash.turbine.test
+import com.google.samples.apps.nowinandroid.core.result.Result.Error
+import com.google.samples.apps.nowinandroid.core.result.Result.Loading
+import com.google.samples.apps.nowinandroid.core.result.Result.Success
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -32,16 +35,16 @@ class ResultKtTest {
         }
             .asResult()
             .test {
-                assertEquals(Result.Loading, awaitItem())
-                assertEquals(Result.Success(1), awaitItem())
+                assertEquals(Loading, awaitItem())
+                assertEquals(Success(1), awaitItem())
 
                 when (val errorResult = awaitItem()) {
-                    is Result.Error -> assertEquals(
+                    is Error -> assertEquals(
                         "Test Done",
                         errorResult.exception.message,
                     )
-                    Result.Loading,
-                    is Result.Success,
+                    Loading,
+                    is Success,
                     -> throw IllegalStateException(
                         "The flow should have emitted an Error Result",
                     )

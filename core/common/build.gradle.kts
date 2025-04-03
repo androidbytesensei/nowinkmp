@@ -26,6 +26,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)
+            // Add Koin KMP Dependency
+            implementation(libs.koin.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlinx.coroutines.test)
