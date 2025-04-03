@@ -32,3 +32,9 @@ kotlin {
         }
     }
 }
+
+// This block will be removed while cleanup,
+// we're adding this to ensure this library imports are available on android modules
+dependencies {
+    implementation(libs.kotlinx.datetime)
+}
