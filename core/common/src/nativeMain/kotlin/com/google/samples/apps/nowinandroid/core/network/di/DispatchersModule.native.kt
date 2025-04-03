@@ -23,10 +23,7 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val dispatchersModule = module {
-    includes(ioDispatchersModule)
-    single<CoroutineDispatcher>(named(NiaDispatchers.Default.name)) { Dispatchers.Default }
-    single<CoroutineDispatcher>(named(NiaDispatchers.Unconfined.name)) { Dispatchers.Unconfined }
-}
-
-expect val ioDispatchersModule: Module
+actual val ioDispatchersModule: Module
+    get() = module {
+        single<CoroutineDispatcher>(named(NiaDispatchers.IO.name)) { Dispatchers.Default }
+    }

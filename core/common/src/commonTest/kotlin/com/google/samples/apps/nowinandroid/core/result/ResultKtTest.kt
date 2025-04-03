@@ -22,7 +22,7 @@ import com.google.samples.apps.nowinandroid.core.result.Result.Loading
 import com.google.samples.apps.nowinandroid.core.result.Result.Success
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ResultKtTest {
