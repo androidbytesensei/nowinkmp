@@ -15,9 +15,26 @@
  */
 
 plugins {
-    alias(libs.plugins.nowinandroid.jvm.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
 }
 
+android {
+    namespace = "com.google.samples.apps.nowinandroid.core.model.data"
+}
+
+kotlin {
+    // Configure source sets
+    sourceSets {
+        // Common source set - shared across all platforms
+        commonMain.dependencies {
+            // Common dependencies
+            implementation(libs.kotlinx.datetime)
+        }
+    }
+}
+
+// This block will be removed while cleanup,
+// we're adding this to ensure this library imports are available on android modules
 dependencies {
-    api(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.datetime)
 }

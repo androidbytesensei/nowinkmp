@@ -33,6 +33,9 @@ dependencies {
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
 
+    // we're adding this to ensure this library imports are available on this module.
+    implementation(libs.kotlinx.datetime)
+
     androidTestImplementation(libs.bundles.androidx.compose.ui.test)
     androidTestImplementation(projects.core.testing)
 }

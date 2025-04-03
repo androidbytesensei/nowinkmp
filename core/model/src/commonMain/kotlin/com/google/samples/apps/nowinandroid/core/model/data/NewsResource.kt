@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,18 @@
 
 package com.google.samples.apps.nowinandroid.core.model.data
 
-/** An entity that holds the search result */
-data class SearchResult(
-    val topics: List<Topic> = emptyList(),
-    val newsResources: List<NewsResource> = emptyList(),
+import kotlinx.datetime.Instant
+
+/**
+ * External data layer representation of a fully populated NiA news resource
+ */
+data class NewsResource(
+    val id: String,
+    val title: String,
+    val content: String,
+    val url: String,
+    val headerImageUrl: String?,
+    val publishDate: Instant,
+    val type: String,
+    val topics: List<Topic>,
 )

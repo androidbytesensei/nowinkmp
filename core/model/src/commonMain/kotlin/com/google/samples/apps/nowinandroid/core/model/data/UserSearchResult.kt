@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,11 @@
 
 package com.google.samples.apps.nowinandroid.core.model.data
 
-import kotlinx.datetime.Instant
-
 /**
- * External data layer representation of a fully populated NiA news resource
+ * An entity of [SearchResult] with additional user information such as whether the user is
+ * following a topic.
  */
-data class NewsResource(
-    val id: String,
-    val title: String,
-    val content: String,
-    val url: String,
-    val headerImageUrl: String?,
-    val publishDate: Instant,
-    val type: String,
-    val topics: List<Topic>,
+data class UserSearchResult(
+    val topics: List<FollowableTopic> = emptyList(),
+    val newsResources: List<UserNewsResource> = emptyList(),
 )
