@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
-    id("kotlinx-serialization")
+    alias(libs.plugins.ktorfit)
+    alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -34,22 +38,75 @@ android {
     }
 }
 
+buildkonfig {
+    packageName = "com.google.samples.apps.nowinandroid.core.network"
+    defaultConfigs {
+        buildConfigField(STRING, "BACKEND_URL", "\"https://www.example.com\"")
+    }
+}
+
 secrets {
     defaultPropertiesFileName = "secrets.defaults.properties"
 }
 
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(libs.kotlinx.datetime)
+            api(projects.core.common)
+            api(projects.core.model)
+
+            implementation(libs.kermit.logging)
+
+            implementation(libs.coil)
+            implementation(libs.coil.svg)
+            implementation(libs.coil.network.ktor)
+
+            implementation(libs.koin.core)
+
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.json)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.serialization)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+
+            implementation(libs.ktorfit.lib)
+            implementation(libs.ktorfit.converters.flow)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.koin.android)
+            implementation(libs.ktor.client.okhttp)
+        }
+
+        desktopMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+
+        nativeMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+
+        jsMain.dependencies {
+            implementation(libs.ktor.client.js)
+        }
+
+        commonTest.dependencies {
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.kotlin.test)
+        }
+    }
+}
+
+
 dependencies {
-    api(libs.kotlinx.datetime)
-    api(projects.core.common)
-    api(projects.core.model)
-
-    implementation(libs.koin.android)
-    implementation(libs.coil.kt)
-    implementation(libs.coil.kt.svg)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.okhttp.logging)
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.kotlin.serialization)
-
-    testImplementation(libs.kotlinx.coroutines.test)
+    add("kspCommonMainMetadata", libs.ktorfit.ksp)
+    add("kspAndroid", libs.ktorfit.ksp)
+    add("kspJs", libs.ktorfit.ksp)
+    add("kspDesktop", libs.ktorfit.ksp)
+    add("kspIosX64", libs.ktorfit.ksp)
+    add("kspIosArm64", libs.ktorfit.ksp)
+    add("kspIosSimulatorArm64", libs.ktorfit.ksp)
 }

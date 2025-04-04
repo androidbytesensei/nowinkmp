@@ -20,8 +20,10 @@ import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
-import coil.ImageLoader
-import coil.ImageLoaderFactory
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.SingletonImageLoader
+import coil3.request.crossfade
 import com.google.samples.apps.nowinandroid.di.appModule
 import com.google.samples.apps.nowinandroid.sync.initializers.Sync
 import com.google.samples.apps.nowinandroid.util.ProfileVerifierLogger
@@ -38,8 +40,7 @@ import org.koin.dsl.koinConfiguration
  * [Application] class for NiA
  */
 @OptIn(KoinExperimentalAPI::class)
-class NiaApplication : Application(), ImageLoaderFactory, KoinStartup {
-    private val imageLoader: ImageLoader by inject()
+class NiaApplication : Application(), KoinStartup, SingletonImageLoader.Factory {
     val profileVerifierLogger: ProfileVerifierLogger by inject()
 
     @KoinExperimentalAPI
@@ -59,7 +60,11 @@ class NiaApplication : Application(), ImageLoaderFactory, KoinStartup {
         profileVerifierLogger()
     }
 
-    override fun newImageLoader(): ImageLoader = imageLoader
+    override fun newImageLoader(context: PlatformContext): ImageLoader {
+        return ImageLoader.Builder(context)
+            .crossfade(true)
+            .build()
+    }
 
     /**
      * Return true if the application is debuggable.
