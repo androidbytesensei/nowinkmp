@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright 2023 The Android Open Source Project
+     Copyright 2022 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,17 +14,8 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-    <application>
-        <!-- Enable Firebase analytics for `prod` builds -->
-        <meta-data
-            tools:replace="android:value"
-            android:name="firebase_analytics_collection_deactivated"
-            android:value="false" />
-        <meta-data
-            tools:replace="android:value"
-            android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" />
-    </application>
-</manifest>
+<resources>
+    <string name="core_notifications_news_notification_channel_name">News updates</string>
+    <string name="core_notifications_news_notification_channel_description">The latest updates on what\'s new in Android</string>
+    <plurals name="core_notifications_news_notification_group_summary">%1$d news updates</plurals>
+</resources>
