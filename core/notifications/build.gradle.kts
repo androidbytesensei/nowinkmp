@@ -14,19 +14,35 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose)
 }
 
 android {
     namespace = "com.google.samples.apps.nowinandroid.core.notifications"
 }
 
-dependencies {
-    api(projects.core.model)
+kotlin {
+    listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            export(libs.kmp.notifier)
+        }
+    }
 
-    implementation(projects.core.common)
-    implementation(libs.koin.android)
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.model)
+            implementation(projects.core.common)
+            implementation(libs.koin.core)
+            implementation(compose.runtime)
+            implementation(compose.components.resources)
+            implementation(libs.kmp.notifier)
+        }
 
-    compileOnly(platform(libs.androidx.compose.bom))
+        androidMain.dependencies {
+            implementation(libs.koin.android)
+        }
+    }
 }
