@@ -24,6 +24,7 @@ buildscript {
             }
         }
         mavenCentral()
+        gradlePluginPortal()
 
         // This is used only for internal Google builds.
         maven { url = uri("../nowinandroid-prebuilts/m2repository") }
@@ -67,4 +68,5 @@ plugins {
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.ktorfit) apply false
+    alias(libs.plugins.buildkonfig) apply false
 }
