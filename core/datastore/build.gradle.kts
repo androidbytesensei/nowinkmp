@@ -15,9 +15,10 @@
  */
 
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -27,14 +28,24 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.core.datastore"
 }
 
-dependencies {
-    api(libs.androidx.dataStore)
-    api(projects.core.datastoreProto)
-    api(projects.core.model)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.model)
+            implementation(projects.core.common)
 
-    implementation(projects.core.common)
-    implementation(libs.koin.android)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
 
-    testImplementation(projects.core.datastoreTest)
-    testImplementation(libs.kotlinx.coroutines.test)
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.coroutines)
+            implementation(libs.multiplatform.settings.serialization)
+        }
+        commonTest.dependencies {
+            implementation(libs.multiplatform.settings.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.kotlin.test)
+        }
+    }
 }
