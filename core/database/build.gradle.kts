@@ -15,7 +15,7 @@
  */
 
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
     alias(libs.plugins.nowinandroid.sqldelight)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
@@ -25,13 +25,39 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.core.database"
 }
 
-dependencies {
-    api(projects.core.model)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.model)
+            implementation(projects.core.common)
 
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.koin.android)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.koin.core)
+            implementation(libs.kotlinx.coroutines.core)
+        }
 
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
+        androidMain.dependencies {
+            implementation(libs.koin.android)
+            implementation(libs.androidx.test.core)
+            implementation(libs.androidx.test.runner)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+
+        jsMain.dependencies {
+            implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.0.2"))
+            implementation(npm("sql.js", "1.8.0"))
+            implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+        }
+    }
 }
+
+// Workaround yarn concurrency issue - https://youtrack.jetbrains.com/issue/KT-43320
+tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask>()
+    .configureEach {
+        args.addAll(
+            listOf(
+                "--mutex",
+                "file:${file("../build/.yarn-mutex")}",
+            ),
+        )
+    }
