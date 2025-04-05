@@ -47,12 +47,17 @@ class SQLDelightConventionPlugin : Plugin<Project> {
             // Add required dependencies
             dependencies {
                 // SQLDelight base dependencies
-                add("implementation", libs.findLibrary("sqldelight.android.driver").get())
-                add("implementation", libs.findLibrary("sqldelight.coroutines.extensions").get())
-                add("implementation", libs.findLibrary("sqldelight.primitive.adapters").get())
+                add("androidMainImplementation", libs.findLibrary("sqldelight.android.driver").get())
+                add("nativeMainImplementation", libs.findLibrary("sqldelight.native.driver").get())
+                add("desktopMainImplementation", libs.findLibrary("sqldelight.sqlite.driver").get())
+                add("desktopMainImplementation", libs.findLibrary("sqldelight.sqlite.driver").get())
+                add("jsMainImplementation", libs.findLibrary("sqldelight.webworker.driver").get())
+
+                add("commonMainImplementation", libs.findLibrary("sqldelight.coroutines.extensions").get())
+                add("commonMainImplementation", libs.findLibrary("sqldelight.primitive.adapters").get())
 
                 // Testing dependencies
-                add("testImplementation", libs.findLibrary("sqldelight.sqlite.driver").get())
+                add("androidUnitTestImplementation", libs.findLibrary("sqldelight.sqlite.driver").get())
             }
         }
     }
