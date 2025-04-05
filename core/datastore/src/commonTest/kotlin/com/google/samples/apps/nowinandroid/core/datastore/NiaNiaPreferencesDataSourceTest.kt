@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,29 @@
 
 package com.google.samples.apps.nowinandroid.core.datastore
 
-import com.google.samples.apps.nowinandroid.core.datastore.test.InMemoryDataStore
+import com.russhwolf.settings.MapSettings
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class NiaPreferencesDataSourceTest {
+class NiaNiaPreferencesDataSourceTest {
 
     private val testScope = TestScope(UnconfinedTestDispatcher())
 
     private lateinit var subject: NiaPreferencesDataSource
 
-    @Before
+    @BeforeTest
     fun setup() {
-        subject = NiaPreferencesDataSource(InMemoryDataStore(UserPreferences.getDefaultInstance()))
+        subject = NiaPreferencesDataSource(
+            settings = MapSettings(),
+            dispatcher = Dispatchers.Unconfined
+        )
     }
 
     @Test
