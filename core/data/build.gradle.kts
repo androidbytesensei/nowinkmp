@@ -41,6 +41,5 @@ dependencies {
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
-    testImplementation(projects.core.datastoreTest)
     testImplementation(projects.core.testing)
 }

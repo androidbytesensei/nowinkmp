@@ -114,7 +114,6 @@ dependencies {
     debugImplementation(projects.uiTestHiltManifest)
 
     testImplementation(projects.core.dataTest)
-    testImplementation(projects.core.datastoreTest)
     testImplementation(libs.koin.test)
     testImplementation(projects.sync.syncTest)
     testImplementation(libs.kotlin.test)
@@ -127,7 +126,6 @@ dependencies {
 
     androidTestImplementation(projects.core.testing)
     androidTestImplementation(projects.core.dataTest)
-    androidTestImplementation(projects.core.datastoreTest)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.koin.android.test)
