@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.di
 
-import com.google.samples.apps.nowinandroid.core.analytics.analyticsModule
+import com.google.samples.apps.nowinandroid.core.analytics.di.analyticsModule
 import com.google.samples.apps.nowinandroid.core.data.di.dataModule
 import com.google.samples.apps.nowinandroid.core.database.di.databaseModule
 import com.google.samples.apps.nowinandroid.core.datastore.di.dataStoreModule
