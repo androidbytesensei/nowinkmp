@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
-    id("kotlinx-serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -29,17 +29,41 @@ android {
     }
 }
 
-dependencies {
-    api(projects.core.common)
-    api(projects.core.database)
-    api(projects.core.datastore)
-    api(projects.core.network)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.common)
+            api(projects.core.database)
+            api(projects.core.datastore)
+            api(projects.core.network)
 
-    implementation(projects.core.analytics)
-    implementation(projects.core.notifications)
-    implementation(libs.koin.android)
+            implementation(projects.core.analytics)
+            implementation(projects.core.notifications)
+            implementation(libs.kermit.logging)
+            implementation(libs.koin.core)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.coroutines.test)
+        }
 
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.kotlinx.serialization.json)
-    testImplementation(projects.core.testing)
+        commonTest.dependencies {
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.test)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.coroutines.test)
+//            testImplementation(projects.core.testing)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.tracing.ktx)
+            implementation(libs.koin.android)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+        androidUnitTest.dependencies {
+            implementation(projects.core.testing)
+        }
+    }
 }
+
+
