@@ -25,5 +25,5 @@ import androidx.test.runner.AndroidJUnitRunner
  */
 class NiaTestRunner : AndroidJUnitRunner() {
     override fun newApplication(cl: ClassLoader, name: String, context: Context): Application =
-        super.newApplication(cl, KoinTestApplication::class.java.name, context)
+        super.newApplication(cl, KoinTestApplication::class.simpleName, context)
 }

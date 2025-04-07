@@ -30,7 +30,6 @@ import kotlinx.datetime.Instant
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-// TODO:: Move this file to the commonTest directory when the testing module will migrated to KMP.
 class CompositeUserNewsResourceRepositoryTest {
 
     private val newsRepository = TestNewsRepository()

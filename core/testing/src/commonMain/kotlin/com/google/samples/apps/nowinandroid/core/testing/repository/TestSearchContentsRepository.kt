@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
-import org.jetbrains.annotations.TestOnly
 
 class TestSearchContentsRepository : SearchContentsRepository {
 
@@ -47,10 +46,8 @@ class TestSearchContentsRepository : SearchContentsRepository {
 
     override fun getSearchContentsCount(): Flow<Int> = combine(cachedTopics, cachedNewsResources) { topics, news -> topics.size + news.size }
 
-    @TestOnly
     fun addTopics(topics: List<Topic>) = cachedTopics.update { it + topics }
 
-    @TestOnly
     fun addNewsResources(newsResources: List<NewsResource>) =
         cachedNewsResources.update { it + newsResources }
 }

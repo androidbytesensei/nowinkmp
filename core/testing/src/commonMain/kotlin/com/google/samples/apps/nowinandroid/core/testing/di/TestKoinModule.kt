@@ -38,6 +38,7 @@ import com.google.samples.apps.nowinandroid.core.testing.util.TestNetworkMonitor
 import com.google.samples.apps.nowinandroid.core.testing.util.TestSyncManager
 import com.google.samples.apps.nowinandroid.core.testing.util.TestTimeZoneMonitor
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.koin.core.module.dsl.bind
@@ -48,6 +49,7 @@ import org.koin.dsl.module
 /**
  * Koin module for providing test implementations
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 val testModule = module {
     // Provide test dispatcher
     single<TestDispatcher> { UnconfinedTestDispatcher() }
