@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
 }
 
@@ -22,16 +22,22 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.core.testing"
 }
 
-dependencies {
-    api(libs.kotlinx.coroutines.test)
-    api(projects.core.analytics)
-    api(projects.core.common)
-    api(projects.core.data)
-    api(projects.core.model)
-    api(projects.core.notifications)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(libs.kotlinx.coroutines.test)
+            api(projects.core.analytics)
+            api(projects.core.common)
+            api(projects.core.data)
+            api(projects.core.model)
+            api(projects.core.notifications)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.koin.core)
+        }
 
-
-    implementation(libs.androidx.test.rules)
-    implementation(libs.koin.android.test)
-    implementation(libs.kotlinx.datetime)
+        androidMain.dependencies {
+            implementation(libs.androidx.test.rules)
+            implementation(libs.koin.android.test)
+        }
+    }
 }
