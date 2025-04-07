@@ -51,7 +51,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.coroutines.test)
-//            testImplementation(projects.core.testing)
+            implementation(projects.core.testing)
         }
 
         androidMain.dependencies {

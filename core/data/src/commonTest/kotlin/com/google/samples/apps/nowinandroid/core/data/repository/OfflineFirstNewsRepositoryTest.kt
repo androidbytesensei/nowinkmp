@@ -36,6 +36,7 @@ import com.google.samples.apps.nowinandroid.core.model.data.NewsResource
 import com.google.samples.apps.nowinandroid.core.model.data.Topic
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkChangeList
 import com.google.samples.apps.nowinandroid.core.network.model.NetworkNewsResource
+import com.google.samples.apps.nowinandroid.core.testing.notifications.TestNotifier
 import com.russhwolf.settings.MapSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
