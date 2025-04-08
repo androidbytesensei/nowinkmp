@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.nowinandroid.feature.foryou
 
-import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import androidx.activity.compose.ReportDrawnWhen
@@ -76,7 +75,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
@@ -102,6 +100,7 @@ import com.google.samples.apps.nowinandroid.core.ui.TrackScrollJank
 import com.google.samples.apps.nowinandroid.core.ui.UserNewsResourcePreviewParameterProvider
 import com.google.samples.apps.nowinandroid.core.ui.launchCustomChromeTab
 import com.google.samples.apps.nowinandroid.core.ui.newsFeed
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -474,8 +473,7 @@ private fun DeepLinkEffect(
         if (!userNewsResource.hasBeenViewed) onDeepLinkOpened(userNewsResource.id)
 
         launchCustomChromeTab(
-            context = context,
-            uri = Uri.parse(userNewsResource.url),
+            uri = userNewsResource.url,
             toolbarColor = backgroundColor,
         )
     }

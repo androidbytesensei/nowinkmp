@@ -48,7 +48,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.samples.apps.nowinandroid.core.designsystem.component.DynamicAsyncImage
@@ -68,7 +67,11 @@ import com.google.samples.apps.nowinandroid.core.ui.TrackScrollJank
 import com.google.samples.apps.nowinandroid.core.ui.UserNewsResourcePreviewParameterProvider
 import com.google.samples.apps.nowinandroid.core.ui.userNewsResourceCardItems
 import com.google.samples.apps.nowinandroid.feature.topic.R.string
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.koin.compose.viewmodel.koinViewModel
+import ui.generated.resources.Res
+import ui.generated.resources.core_ui_back
 
 @Composable
 fun TopicScreen(
@@ -292,7 +295,7 @@ private fun TopicToolbar(
                 Icon(
                     imageVector = NiaIcons.ArrowBack,
                     contentDescription = stringResource(
-                        id = com.google.samples.apps.nowinandroid.core.ui.R.string.core_ui_back,
+                        resource = Res.string.core_ui_back,
                     ),
                 )
             }
@@ -318,7 +321,7 @@ private fun TopicToolbar(
 @DevicePreviews
 @Composable
 fun TopicScreenPopulated(
-    @PreviewParameter(UserNewsResourcePreviewParameterProvider::class)
+    @PreviewParameter(provider = UserNewsResourcePreviewParameterProvider::class)
     userNewsResources: List<UserNewsResource>,
 ) {
     NiaTheme {
