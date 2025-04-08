@@ -92,6 +92,7 @@ composeLifecycle = "2.8.3"
 composeNavigation = "2.8.0-alpha10"
 jbCoreBundle = "1.0.1"
 jbSavedState = "1.2.2"
+jbAdaptive = "1.0.0"
 
 [bundles]
 androidx-compose-ui-test = ["androidx-compose-ui-test", "androidx-compose-ui-testManifest"]
@@ -208,6 +209,8 @@ jb-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = 
 jb-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jbSavedState" }
 jb-composeNavigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 jb-navigation = { module = "org.jetbrains.androidx.navigation:navigation-common", version.ref = "composeNavigation" }
+jb-material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "jbAdaptive" }
+jb-material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "jbAdaptive" }
 
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil3" }
 coil-core = { group = "io.coil-kt.coil3", name = "coil-core", version.ref = "coil3" }

@@ -14,34 +14,66 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
-    alias(libs.plugins.nowinandroid.android.library.compose)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
+    alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.roborazzi)
+    alias(libs.plugins.compose)
 }
 
 android {
     namespace = "com.google.samples.apps.nowinandroid.core.designsystem"
 }
 
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.navigation)
+
+            api(compose.ui)
+            api(compose.uiUtil)
+            api(compose.runtime)
+            api(compose.material3)
+            api(compose.components.resources)
+            api(compose.components.uiToolingPreview)
+            api(compose.material3AdaptiveNavigationSuite)
+            api(compose.materialIconsExtended)
+            api(compose.foundation)
+            api(libs.jb.material3.adaptive)
+            api(libs.jb.material3.adaptive.layout)
+            api(libs.coil.compose)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.compose.ui.tooling.preview)
+            implementation(libs.androidx.activity.compose)
+
+        }
+        androidInstrumentedTest.dependencies {
+            implementation(libs.androidx.compose.ui.test)
+            implementation(projects.core.testing)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.androidx.compose.ui.test)
+            implementation(libs.androidx.compose.ui.testManifest)
+            implementation(libs.hilt.android.testing)
+            implementation(libs.robolectric)
+            implementation(libs.roborazzi)
+            implementation(projects.core.screenshotTesting)
+            implementation(projects.core.testing)
+        }
+    }
+}
+
 dependencies {
     lintPublish(projects.lint)
+}
 
-    api(libs.androidx.compose.foundation)
-    api(libs.androidx.compose.foundation.layout)
-    api(libs.androidx.compose.material.iconsExtended)
-    api(libs.androidx.compose.material3)
-    api(libs.androidx.compose.material3.adaptive)
-    api(libs.androidx.compose.material3.navigationSuite)
-    api(libs.androidx.compose.runtime)
-    api(libs.androidx.compose.ui.util)
-
-    implementation(libs.coil.kt.compose)
-
-    testImplementation(libs.androidx.compose.ui.test)
-    testImplementation(libs.androidx.compose.ui.testManifest)
-    
-    testImplementation(libs.koin.test)
-    testImplementation(libs.robolectric)
-    testImplementation(projects.core.screenshotTesting)
+compose.resources {
+    publicResClass = true
+    generateResClass = always
+    packageOfResClass = "designsystem.generated.resources"
 }

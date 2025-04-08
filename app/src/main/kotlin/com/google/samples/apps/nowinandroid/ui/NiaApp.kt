@@ -207,7 +207,7 @@ internal fun NiaApp(
                 if (destination != null) {
                     shouldShowTopAppBar = true
                     NiaTopAppBar(
-                        titleRes = destination.titleTextId,
+                        title = stringResource(destination.titleTextId),
                         navigationIcon = NiaIcons.Search,
                         navigationIconContentDescription = stringResource(
                             id = settingsR.string.feature_settings_top_app_bar_navigation_icon_description,
