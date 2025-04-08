@@ -14,28 +14,48 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.android.library.compose)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose)
 }
 
 android {
     namespace = "com.google.samples.apps.nowinandroid.core.ui"
 }
 
-dependencies {
-    api(libs.androidx.metrics)
-    api(projects.core.analytics)
-    api(projects.core.designsystem)
-    api(projects.core.model)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.analytics)
+            api(projects.core.designsystem)
+            api(projects.core.model)
 
-    implementation(libs.androidx.browser)
-    implementation(libs.coil.kt)
-    implementation(libs.coil.kt.compose)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
 
-    // we're adding this to ensure this library imports are available on this module.
-    implementation(libs.kotlinx.datetime)
+            implementation(libs.coil)
+            implementation(libs.coil.compose)
 
-    androidTestImplementation(libs.bundles.androidx.compose.ui.test)
-    androidTestImplementation(projects.core.testing)
+            implementation(libs.kotlinx.datetime)
+        }
+
+        androidMain.dependencies {
+            api(libs.androidx.metrics)
+            implementation(libs.androidx.browser)
+        }
+
+        androidInstrumentedTest.dependencies {
+            implementation(projects.core.testing)
+            implementation(libs.bundles.androidx.compose.ui.test)
+        }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    generateResClass = always
+    packageOfResClass = "ui.generated.resources"
 }
