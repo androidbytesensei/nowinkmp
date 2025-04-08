@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.nowinandroid.core.designsystem.component
+package com.google.samples.apps.nowinandroid.core.designsystem.theme
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import coil3.ImageLoader
-import coil3.PlatformContext
-import coil3.memory.MemoryCache
-import coil3.util.DebugLogger
 
 @Composable
-fun rememberImageLoader(context: PlatformContext): ImageLoader {
-    return remember(context) {
-        ImageLoader.Builder(context)
-            .memoryCache {
-                MemoryCache.Builder()
-                    .maxSizePercent(context, 0.25)
-                    .build()
-            }
-            .logger(DebugLogger())
-            .build()
-    }
-}
+actual fun dynamicColorScheme(
+    darkTheme: Boolean,
+): ColorScheme = if (darkTheme) DarkDefaultColorScheme else LightDefaultColorScheme
+
+actual fun supportsDynamicTheming(): Boolean = false
