@@ -25,9 +25,6 @@ import com.google.samples.apps.nowinandroid.feature.foryou.navigation.ForYouBase
 import com.google.samples.apps.nowinandroid.feature.foryou.navigation.ForYouRoute
 import com.google.samples.apps.nowinandroid.feature.interests.navigation.InterestsRoute
 import kotlin.reflect.KClass
-import com.google.samples.apps.nowinandroid.feature.bookmarks.R as bookmarksR
-import com.google.samples.apps.nowinandroid.feature.foryou.R as forYouR
-import com.google.samples.apps.nowinandroid.feature.search.R as searchR
 
 /**
  * Type for the top level destinations in the application. Contains metadata about the destination
@@ -54,7 +51,7 @@ enum class TopLevelDestination(
     FOR_YOU(
         selectedIcon = NiaIcons.Upcoming,
         unselectedIcon = NiaIcons.UpcomingBorder,
-        iconTextId = forYouR.string.feature_foryou_title,
+        iconTextId = R.string.foryou_title,
         titleTextId = R.string.app_name,
         route = ForYouRoute::class,
         baseRoute = ForYouBaseRoute::class,
@@ -62,15 +59,15 @@ enum class TopLevelDestination(
     BOOKMARKS(
         selectedIcon = NiaIcons.Bookmarks,
         unselectedIcon = NiaIcons.BookmarksBorder,
-        iconTextId = bookmarksR.string.feature_bookmarks_title,
-        titleTextId = bookmarksR.string.feature_bookmarks_title,
+        iconTextId = R.string.bookmarks_title,
+        titleTextId = R.string.bookmarks_title,
         route = BookmarksRoute::class,
     ),
     INTERESTS(
         selectedIcon = NiaIcons.Grid3x3,
         unselectedIcon = NiaIcons.Grid3x3,
-        iconTextId = searchR.string.feature_search_interests,
-        titleTextId = searchR.string.feature_search_interests,
+        iconTextId = R.string.search_interests,
+        titleTextId = R.string.search_interests,
         route = InterestsRoute::class,
     ),
 }

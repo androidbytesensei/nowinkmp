@@ -17,4 +17,7 @@
 <resources>
     <string name="app_name">Now in Android</string>
     <string name="not_connected">⚠️ You aren’t connected to the internet</string>
+    <string name="foryou_title">For you</string>
+    <string name="bookmarks_title">Saved</string>
+    <string name="search_interests">Interests</string>
 </resources>
