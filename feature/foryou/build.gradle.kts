@@ -15,8 +15,7 @@
  */
 
 plugins {
-    alias(libs.plugins.nowinandroid.android.feature)
-    alias(libs.plugins.nowinandroid.android.library.compose)
+    alias(libs.plugins.nowinandroid.compose.multiplatform.feature)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
     alias(libs.plugins.roborazzi)
 }
@@ -25,17 +24,42 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.feature.foryou"
 }
 
-dependencies {
-    implementation(libs.accompanist.permissions)
-    implementation(projects.core.data)
-    implementation(projects.core.domain)
-    implementation(projects.core.notifications)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.domain)
+            implementation(projects.core.notifications)
 
-    testImplementation(libs.hilt.android.testing)
-    testImplementation(libs.robolectric)
-    testImplementation(projects.core.testing)
-    testDemoImplementation(projects.core.screenshotTesting)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+        }
 
-    androidTestImplementation(libs.bundles.androidx.compose.ui.test)
-    androidTestImplementation(projects.core.testing)
+        nativeMain.dependencies {
+            implementation(libs.moko.permission)
+            implementation(libs.moko.permission.compose)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.moko.permission)
+            implementation(libs.moko.permission.compose)
+        }
+
+        androidUnitTest.dependencies {
+            implementation(libs.hilt.android.testing)
+            implementation(libs.robolectric)
+            implementation(projects.core.testing)
+            implementation(projects.core.screenshotTesting)
+        }
+        androidInstrumentedTest.dependencies {
+            implementation(libs.bundles.androidx.compose.ui.test)
+            implementation(projects.core.testing)
+        }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    generateResClass = always
+    packageOfResClass = "foryou.generated.resources"
 }

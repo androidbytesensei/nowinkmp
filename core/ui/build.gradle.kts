@@ -45,6 +45,7 @@ kotlin {
         androidMain.dependencies {
             api(libs.androidx.metrics)
             implementation(libs.androidx.browser)
+            implementation(libs.androidx.activity.compose)
         }
 
         androidInstrumentedTest.dependencies {

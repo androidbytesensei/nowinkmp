@@ -23,19 +23,25 @@ class CMPFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply {
-                apply("org.convention.kmp.library")
-                apply("org.convention.kmp.koin")
+                apply("nowinandroid.kotlin.multiplatform.library")
+//                apply("org.convention.kmp.koin")
                 apply("org.jetbrains.kotlin.plugin.compose")
                 apply("org.jetbrains.compose")
-                apply("org.convention.detekt.plugin")
-                apply("org.convention.spotless.plugin")
+                apply("org.jetbrains.kotlin.plugin.serialization")
             }
 
             dependencies {
-                // TODO:: uncomment below lines when these modules migrated
-                // add("commonMainImplementation", project(":core:ui"))
-                // add("commonMainImplementation", project(":core:designsystem"))
-                // add("commonMainImplementation", project(":core:data"))
+                add("commonMainImplementation", project(":core:ui"))
+                add("commonMainImplementation", project(":core:designsystem"))
+                add("commonMainImplementation", project(":core:data"))
+
+                add(
+                    "commonMainImplementation",
+                    libs.findLibrary("kotlinx.serialization.json").get(),
+                )
+
+                // Remove this Koin Convention Plugin migrated to KMP
+                add("commonMainImplementation", libs.findLibrary("koin.core").get())
 
                 add("commonMainImplementation", libs.findLibrary("koin.compose").get())
                 add("commonMainImplementation", libs.findLibrary("koin.compose.viewmodel").get())
@@ -50,19 +56,6 @@ class CMPFeatureConventionPlugin : Plugin<Project> {
                 add("commonMainImplementation", libs.findLibrary("jb.savedstate").get())
                 add("commonMainImplementation", libs.findLibrary("jb.bundle").get())
                 add("commonMainImplementation", libs.findLibrary("jb.composeNavigation").get())
-                add(
-                    "commonMainImplementation",
-                    libs.findLibrary("kotlinx.collections.immutable").get(),
-                )
-
-                add("androidMainImplementation", platform(libs.findLibrary("koin-bom").get()))
-                add("androidMainImplementation", libs.findLibrary("koin-android").get())
-                add("androidMainImplementation", libs.findLibrary("koin.androidx.compose").get())
-
-                add("androidMainImplementation", libs.findLibrary("koin.android").get())
-                add("androidMainImplementation", libs.findLibrary("koin.androidx.navigation").get())
-                add("androidMainImplementation", libs.findLibrary("koin.androidx.compose").get())
-                add("androidMainImplementation", libs.findLibrary("koin.core.viewmodel").get())
             }
         }
     }

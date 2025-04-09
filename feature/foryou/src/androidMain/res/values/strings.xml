@@ -15,9 +15,7 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">Now in Android</string>
-    <string name="not_connected">⚠️ You aren’t connected to the internet</string>
-    <string name="foryou_title">For you</string>
-    <string name="bookmarks_title">Saved</string>
-    <string name="search_interests">Interests</string>
+    <!--    Keeping these strings for tests-->
+    <string name="feature_foryou_loading">Loading for you…</string>
+    <string name="feature_foryou_done">Done</string>
 </resources>
