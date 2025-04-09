@@ -16,9 +16,6 @@
 
 package com.google.samples.apps.nowinandroid.feature.foryou
 
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
-import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -68,20 +65,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus.Denied
-import com.google.accompanist.permissions.rememberPermissionState
 import com.google.samples.apps.nowinandroid.core.designsystem.component.DynamicAsyncImage
 import com.google.samples.apps.nowinandroid.core.designsystem.component.NiaButton
 import com.google.samples.apps.nowinandroid.core.designsystem.component.NiaIconToggleButton
@@ -95,11 +85,21 @@ import com.google.samples.apps.nowinandroid.core.designsystem.theme.NiaTheme
 import com.google.samples.apps.nowinandroid.core.model.data.UserNewsResource
 import com.google.samples.apps.nowinandroid.core.ui.DevicePreviews
 import com.google.samples.apps.nowinandroid.core.ui.NewsFeedUiState
+import com.google.samples.apps.nowinandroid.core.ui.ReportDrawnWhen
 import com.google.samples.apps.nowinandroid.core.ui.TrackScreenViewEvent
 import com.google.samples.apps.nowinandroid.core.ui.TrackScrollJank
 import com.google.samples.apps.nowinandroid.core.ui.UserNewsResourcePreviewParameterProvider
 import com.google.samples.apps.nowinandroid.core.ui.launchCustomChromeTab
 import com.google.samples.apps.nowinandroid.core.ui.newsFeed
+import com.google.samples.apps.nowinandroid.feature.foryou.util.NotificationPermissionEffect
+import foryou.generated.resources.Res
+import foryou.generated.resources.feature_foryou_done
+import foryou.generated.resources.feature_foryou_ic_icon_placeholder
+import foryou.generated.resources.feature_foryou_loading
+import foryou.generated.resources.feature_foryou_onboarding_guidance_subtitle
+import foryou.generated.resources.feature_foryou_onboarding_guidance_title
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -155,6 +155,7 @@ internal fun ForYouScreen(
     val scrollbarState = state.scrollbarState(
         itemsAvailable = itemsAvailable,
     )
+
     TrackScrollJank(scrollableState = state, stateName = "forYou:feed")
 
     Box(
@@ -214,7 +215,7 @@ internal fun ForYouScreen(
                 targetOffsetY = { fullHeight -> -fullHeight },
             ) + fadeOut(),
         ) {
-            val loadingContentDescription = stringResource(id = R.string.feature_foryou_loading)
+            val loadingContentDescription = stringResource(Res.string.feature_foryou_loading)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -269,7 +270,7 @@ private fun LazyStaggeredGridScope.onboarding(
             item(span = StaggeredGridItemSpan.FullLine, contentType = "onboarding") {
                 Column(modifier = interestsItemModifier) {
                     Text(
-                        text = stringResource(R.string.feature_foryou_onboarding_guidance_title),
+                        text = stringResource(Res.string.feature_foryou_onboarding_guidance_title),
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -277,7 +278,7 @@ private fun LazyStaggeredGridScope.onboarding(
                         style = MaterialTheme.typography.titleMedium,
                     )
                     Text(
-                        text = stringResource(R.string.feature_foryou_onboarding_guidance_subtitle),
+                        text = stringResource(Res.string.feature_foryou_onboarding_guidance_subtitle),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp, start = 24.dp, end = 24.dp),
@@ -303,7 +304,7 @@ private fun LazyStaggeredGridScope.onboarding(
                                 .fillMaxWidth(),
                         ) {
                             Text(
-                                text = stringResource(R.string.feature_foryou_done),
+                                text = stringResource(Res.string.feature_foryou_done),
                             )
                         }
                     }
@@ -432,7 +433,7 @@ fun TopicIcon(
     modifier: Modifier = Modifier,
 ) {
     DynamicAsyncImage(
-        placeholder = painterResource(R.drawable.feature_foryou_ic_icon_placeholder),
+        placeholder = painterResource(Res.drawable.feature_foryou_ic_icon_placeholder),
         imageUrl = imageUrl,
         // decorative
         contentDescription = null,
@@ -443,29 +444,10 @@ fun TopicIcon(
 }
 
 @Composable
-@OptIn(ExperimentalPermissionsApi::class)
-private fun NotificationPermissionEffect() {
-    // Permission requests should only be made from an Activity Context, which is not present
-    // in previews
-    if (LocalInspectionMode.current) return
-    if (VERSION.SDK_INT < VERSION_CODES.TIRAMISU) return
-    val notificationsPermissionState = rememberPermissionState(
-        android.Manifest.permission.POST_NOTIFICATIONS,
-    )
-    LaunchedEffect(notificationsPermissionState) {
-        val status = notificationsPermissionState.status
-        if (status is Denied && !status.shouldShowRationale) {
-            notificationsPermissionState.launchPermissionRequest()
-        }
-    }
-}
-
-@Composable
 private fun DeepLinkEffect(
     userNewsResource: UserNewsResource?,
     onDeepLinkOpened: (String) -> Unit,
 ) {
-    val context = LocalContext.current
     val backgroundColor = MaterialTheme.colorScheme.background.toArgb()
 
     LaunchedEffect(userNewsResource) {
