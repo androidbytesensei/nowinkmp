@@ -36,6 +36,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+/**
+ * Koin module for providing test implementations of repositories and other dependencies.
+ * This module is used in the test environment to replace the production implementations
+ * with fake or mock implementations.
+ */
 val testDataModule = module {
     // Provide test dispatchers
     single<CoroutineDispatcher> { get(NiaDispatchers.IO.asQualifier) }

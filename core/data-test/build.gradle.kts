@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -23,9 +23,12 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.core.data.test"
 }
 
-dependencies {
-    api(projects.core.data)
-
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.koin.android.test)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.data)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
+        }
+    }
 }
