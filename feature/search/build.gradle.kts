@@ -15,7 +15,7 @@
  */
 
 plugins {
-    alias(libs.plugins.nowinandroid.android.feature)
+    alias(libs.plugins.nowinandroid.compose.multiplatform.feature)
     alias(libs.plugins.nowinandroid.android.library.compose)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
 }
@@ -24,13 +24,32 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.feature.search"
 }
 
-dependencies {
-    implementation(projects.core.data)
-    implementation(projects.core.domain)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.domain)
 
-    testImplementation(projects.core.testing)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+        }
 
-    androidTestImplementation(libs.bundles.androidx.compose.ui.test)
-    androidTestImplementation(projects.core.testing)
+        commonTest.dependencies {
+            implementation(projects.core.testing)
+        }
+
+        androidInstrumentedTest.dependencies {
+            implementation(projects.core.testing)
+            implementation(libs.kotlin.test)
+            implementation(libs.androidx.lifecycle.runtimeTesting)
+            implementation(libs.bundles.androidx.compose.ui.test)
+        }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    generateResClass = always
+    packageOfResClass = "search.generated.resources"
 }
 
