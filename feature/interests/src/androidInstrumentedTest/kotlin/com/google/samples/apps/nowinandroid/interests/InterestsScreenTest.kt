@@ -30,7 +30,6 @@ import com.google.samples.apps.nowinandroid.feature.interests.InterestsUiState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import com.google.samples.apps.nowinandroid.core.ui.R as CoreUiR
 import com.google.samples.apps.nowinandroid.feature.interests.R as InterestsR
 
 /**
@@ -54,9 +53,9 @@ class InterestsScreenTest {
             interestsLoading = getString(InterestsR.string.feature_interests_loading)
             interestsEmptyHeader = getString(InterestsR.string.feature_interests_empty_header)
             interestsTopicCardFollowButton =
-                getString(CoreUiR.string.core_ui_interests_card_follow_button_content_desc)
+                getString(InterestsR.string.feature_interests_card_follow_button_content_desc)
             interestsTopicCardUnfollowButton =
-                getString(CoreUiR.string.core_ui_interests_card_unfollow_button_content_desc)
+                getString(InterestsR.string.feature_interests_card_unfollow_button_content_desc)
         }
     }
 

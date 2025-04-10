@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.samples.apps.nowinandroid.core.designsystem.component.NiaBackground
 import com.google.samples.apps.nowinandroid.core.designsystem.component.NiaLoadingWheel
@@ -31,6 +30,10 @@ import com.google.samples.apps.nowinandroid.core.model.data.FollowableTopic
 import com.google.samples.apps.nowinandroid.core.ui.DevicePreviews
 import com.google.samples.apps.nowinandroid.core.ui.FollowableTopicPreviewParameterProvider
 import com.google.samples.apps.nowinandroid.core.ui.TrackScreenViewEvent
+import interests.generated.resources.Res
+import interests.generated.resources.feature_interests_empty_header
+import interests.generated.resources.feature_interests_loading
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -70,7 +73,7 @@ internal fun InterestsScreen(
         when (uiState) {
             InterestsUiState.Loading ->
                 NiaLoadingWheel(
-                    contentDesc = stringResource(id = R.string.feature_interests_loading),
+                    contentDesc = stringResource(Res.string.feature_interests_loading),
                 )
 
             is InterestsUiState.Interests ->
@@ -90,12 +93,12 @@ internal fun InterestsScreen(
 
 @Composable
 private fun InterestsEmptyScreen() {
-    Text(text = stringResource(id = R.string.feature_interests_empty_header))
+    Text(text = stringResource(Res.string.feature_interests_empty_header))
 }
 
 @DevicePreviews
 @Composable
-fun InterestsScreenPopulated(
+internal fun InterestsScreenPopulated(
     @PreviewParameter(FollowableTopicPreviewParameterProvider::class)
     followableTopics: List<FollowableTopic>,
 ) {
@@ -115,7 +118,7 @@ fun InterestsScreenPopulated(
 
 @DevicePreviews
 @Composable
-fun InterestsScreenLoading() {
+private fun InterestsScreenLoading() {
     NiaTheme {
         NiaBackground {
             InterestsScreen(
@@ -129,7 +132,7 @@ fun InterestsScreenLoading() {
 
 @DevicePreviews
 @Composable
-fun InterestsScreenEmpty() {
+private fun InterestsScreenEmpty() {
     NiaTheme {
         NiaBackground {
             InterestsScreen(
