@@ -15,7 +15,7 @@
  */
 
 plugins {
-    alias(libs.plugins.nowinandroid.android.feature)
+    alias(libs.plugins.nowinandroid.compose.multiplatform.feature)
     alias(libs.plugins.nowinandroid.android.library.compose)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
 }
@@ -24,11 +24,29 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.feature.bookmarks"
 }
 
-dependencies {
-    implementation(projects.core.data)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+        }
 
-    testImplementation(projects.core.testing)
+        commonTest.dependencies {
+            implementation(projects.core.testing)
+        }
 
-    androidTestImplementation(libs.bundles.androidx.compose.ui.test)
-    androidTestImplementation(projects.core.testing)
+        androidInstrumentedTest.dependencies {
+            implementation(projects.core.testing)
+            implementation(libs.kotlin.test)
+            implementation(libs.androidx.lifecycle.runtimeTesting)
+            implementation(libs.bundles.androidx.compose.ui.test)
+        }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    generateResClass = always
+    packageOfResClass = "bookmarks.generated.resources"
 }
