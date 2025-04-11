@@ -16,9 +16,11 @@
 
 package com.google.samples.apps.nowinandroid.feature.settings
 
+import com.google.samples.apps.nowinandroid.core.data.di.dataModule
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val settingsModule = module {
+    includes(dataModule)
     viewModelOf(::SettingsViewModel)
 }
