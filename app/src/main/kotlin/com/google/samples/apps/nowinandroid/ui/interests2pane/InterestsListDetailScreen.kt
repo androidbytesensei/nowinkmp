@@ -59,6 +59,7 @@ import com.google.samples.apps.nowinandroid.feature.topic.navigation.TopicRoute
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import kotlin.math.max
 
 @Serializable
@@ -207,6 +208,10 @@ internal fun InterestsListDetailScreen(
                                         }
                                     },
                                     onTopicClick = ::onTopicClickShowDetailPane,
+                                    viewModel = koinViewModel(
+                                        key = route.id,
+                                        parameters = { parametersOf(route.id) }
+                                    ),
                                 )
                             }
 
