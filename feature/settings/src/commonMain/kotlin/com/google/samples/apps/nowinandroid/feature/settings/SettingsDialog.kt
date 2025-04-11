@@ -18,7 +18,6 @@
 
 package com.google.samples.apps.nowinandroid.feature.settings
 
-import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,10 +26,10 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -42,18 +41,16 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.samples.apps.nowinandroid.core.designsystem.component.NiaTextButton
 import com.google.samples.apps.nowinandroid.core.designsystem.theme.NiaTheme
 import com.google.samples.apps.nowinandroid.core.designsystem.theme.supportsDynamicTheming
@@ -65,10 +62,30 @@ import com.google.samples.apps.nowinandroid.core.model.data.ThemeBrand
 import com.google.samples.apps.nowinandroid.core.model.data.ThemeBrand.ANDROID
 import com.google.samples.apps.nowinandroid.core.model.data.ThemeBrand.DEFAULT
 import com.google.samples.apps.nowinandroid.core.ui.TrackScreenViewEvent
-import com.google.samples.apps.nowinandroid.feature.settings.R.string
 import com.google.samples.apps.nowinandroid.feature.settings.SettingsUiState.Loading
 import com.google.samples.apps.nowinandroid.feature.settings.SettingsUiState.Success
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import settings.generated.resources.Res
+import settings.generated.resources.Res.string
+import settings.generated.resources.feature_settings_brand_android
+import settings.generated.resources.feature_settings_brand_default
+import settings.generated.resources.feature_settings_brand_guidelines
+import settings.generated.resources.feature_settings_dark_mode_config_dark
+import settings.generated.resources.feature_settings_dark_mode_config_light
+import settings.generated.resources.feature_settings_dark_mode_config_system_default
+import settings.generated.resources.feature_settings_dark_mode_preference
+import settings.generated.resources.feature_settings_dismiss_dialog_button_text
+import settings.generated.resources.feature_settings_dynamic_color_no
+import settings.generated.resources.feature_settings_dynamic_color_preference
+import settings.generated.resources.feature_settings_dynamic_color_yes
+import settings.generated.resources.feature_settings_feedback
+import settings.generated.resources.feature_settings_licenses
+import settings.generated.resources.feature_settings_loading
+import settings.generated.resources.feature_settings_privacy_policy
+import settings.generated.resources.feature_settings_theme
+import settings.generated.resources.feature_settings_title
 
 @Composable
 fun SettingsDialog(
@@ -94,8 +111,6 @@ fun SettingsDialog(
     onChangeDynamicColorPreference: (useDynamicColor: Boolean) -> Unit,
     onChangeDarkThemeConfig: (darkThemeConfig: DarkThemeConfig) -> Unit,
 ) {
-    val configuration = LocalConfiguration.current
-
     /**
      * usePlatformDefaultWidth = false is use as a temporary fix to allow
      * height recalculation during recomposition. This, however, causes
@@ -105,11 +120,10 @@ fun SettingsDialog(
      */
     AlertDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
-        modifier = Modifier.widthIn(max = configuration.screenWidthDp.dp - 80.dp),
         onDismissRequest = { onDismiss() },
         title = {
             Text(
-                text = stringResource(string.feature_settings_title),
+                text = stringResource(Res.string.feature_settings_title),
                 style = MaterialTheme.typography.titleLarge,
             )
         },
@@ -119,7 +133,7 @@ fun SettingsDialog(
                 when (settingsUiState) {
                     Loading -> {
                         Text(
-                            text = stringResource(string.feature_settings_loading),
+                            text = stringResource(Res.string.feature_settings_loading),
                             modifier = Modifier.padding(vertical = 16.dp),
                         )
                     }
@@ -145,7 +159,7 @@ fun SettingsDialog(
                 modifier = Modifier.padding(horizontal = 8.dp),
             ) {
                 Text(
-                    text = stringResource(string.feature_settings_dismiss_dialog_button_text),
+                    text = stringResource(Res.string.feature_settings_dismiss_dialog_button_text),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -163,50 +177,50 @@ private fun ColumnScope.SettingsPanel(
     onChangeDynamicColorPreference: (useDynamicColor: Boolean) -> Unit,
     onChangeDarkThemeConfig: (darkThemeConfig: DarkThemeConfig) -> Unit,
 ) {
-    SettingsDialogSectionTitle(text = stringResource(string.feature_settings_theme))
+    SettingsDialogSectionTitle(text = stringResource(Res.string.feature_settings_theme))
     Column(Modifier.selectableGroup()) {
         SettingsDialogThemeChooserRow(
-            text = stringResource(string.feature_settings_brand_default),
+            text = stringResource(Res.string.feature_settings_brand_default),
             selected = settings.brand == DEFAULT,
             onClick = { onChangeThemeBrand(DEFAULT) },
         )
         SettingsDialogThemeChooserRow(
-            text = stringResource(string.feature_settings_brand_android),
+            text = stringResource(Res.string.feature_settings_brand_android),
             selected = settings.brand == ANDROID,
             onClick = { onChangeThemeBrand(ANDROID) },
         )
     }
     AnimatedVisibility(visible = settings.brand == DEFAULT && supportDynamicColor) {
         Column {
-            SettingsDialogSectionTitle(text = stringResource(string.feature_settings_dynamic_color_preference))
+            SettingsDialogSectionTitle(text = stringResource(Res.string.feature_settings_dynamic_color_preference))
             Column(Modifier.selectableGroup()) {
                 SettingsDialogThemeChooserRow(
-                    text = stringResource(string.feature_settings_dynamic_color_yes),
+                    text = stringResource(Res.string.feature_settings_dynamic_color_yes),
                     selected = settings.useDynamicColor,
                     onClick = { onChangeDynamicColorPreference(true) },
                 )
                 SettingsDialogThemeChooserRow(
-                    text = stringResource(string.feature_settings_dynamic_color_no),
+                    text = stringResource(Res.string.feature_settings_dynamic_color_no),
                     selected = !settings.useDynamicColor,
                     onClick = { onChangeDynamicColorPreference(false) },
                 )
             }
         }
     }
-    SettingsDialogSectionTitle(text = stringResource(string.feature_settings_dark_mode_preference))
+    SettingsDialogSectionTitle(text = stringResource(Res.string.feature_settings_dark_mode_preference))
     Column(Modifier.selectableGroup()) {
         SettingsDialogThemeChooserRow(
-            text = stringResource(string.feature_settings_dark_mode_config_system_default),
+            text = stringResource(Res.string.feature_settings_dark_mode_config_system_default),
             selected = settings.darkThemeConfig == FOLLOW_SYSTEM,
             onClick = { onChangeDarkThemeConfig(FOLLOW_SYSTEM) },
         )
         SettingsDialogThemeChooserRow(
-            text = stringResource(string.feature_settings_dark_mode_config_light),
+            text = stringResource(Res.string.feature_settings_dark_mode_config_light),
             selected = settings.darkThemeConfig == LIGHT,
             onClick = { onChangeDarkThemeConfig(LIGHT) },
         )
         SettingsDialogThemeChooserRow(
-            text = stringResource(string.feature_settings_dark_mode_config_dark),
+            text = stringResource(Res.string.feature_settings_dark_mode_config_dark),
             selected = settings.darkThemeConfig == DARK,
             onClick = { onChangeDarkThemeConfig(DARK) },
         )
@@ -251,6 +265,14 @@ fun SettingsDialogThemeChooserRow(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun LinksPanel() {
+    var showLicense by remember { mutableStateOf(false) }
+    if (showLicense) {
+        OpenSourceLicenseScreen(
+            onDismissRequest = { showLicense = false },
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(
             space = 16.dp,
@@ -264,23 +286,22 @@ private fun LinksPanel() {
         ) {
             Text(text = stringResource(string.feature_settings_privacy_policy))
         }
-        val context = LocalContext.current
         NiaTextButton(
             onClick = {
-                context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                showLicense = true
             },
         ) {
-            Text(text = stringResource(string.feature_settings_licenses))
+            Text(text = stringResource(Res.string.feature_settings_licenses))
         }
         NiaTextButton(
             onClick = { uriHandler.openUri(BRAND_GUIDELINES_URL) },
         ) {
-            Text(text = stringResource(string.feature_settings_brand_guidelines))
+            Text(text = stringResource(Res.string.feature_settings_brand_guidelines))
         }
         NiaTextButton(
             onClick = { uriHandler.openUri(FEEDBACK_URL) },
         ) {
-            Text(text = stringResource(string.feature_settings_feedback))
+            Text(text = stringResource(Res.string.feature_settings_feedback))
         }
     }
 }
