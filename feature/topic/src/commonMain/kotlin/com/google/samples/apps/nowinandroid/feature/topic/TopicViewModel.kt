@@ -16,10 +16,8 @@
 
 package com.google.samples.apps.nowinandroid.feature.topic
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.google.samples.apps.nowinandroid.core.data.repository.NewsResourceQuery
 import com.google.samples.apps.nowinandroid.core.data.repository.TopicsRepository
 import com.google.samples.apps.nowinandroid.core.data.repository.UserDataRepository
@@ -29,7 +27,6 @@ import com.google.samples.apps.nowinandroid.core.model.data.Topic
 import com.google.samples.apps.nowinandroid.core.model.data.UserNewsResource
 import com.google.samples.apps.nowinandroid.core.result.Result
 import com.google.samples.apps.nowinandroid.core.result.asResult
-import com.google.samples.apps.nowinandroid.feature.topic.navigation.TopicRoute
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -39,13 +36,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class TopicViewModel(
-    savedStateHandle: SavedStateHandle,
     private val userDataRepository: UserDataRepository,
     topicsRepository: TopicsRepository,
     userNewsResourceRepository: UserNewsResourceRepository,
+    val topicId: String,
 ) : ViewModel() {
-    val topicId = savedStateHandle.toRoute<TopicRoute>().id
-
     val topicUiState: StateFlow<TopicUiState> = topicUiState(
         topicId = topicId,
         userDataRepository = userDataRepository,

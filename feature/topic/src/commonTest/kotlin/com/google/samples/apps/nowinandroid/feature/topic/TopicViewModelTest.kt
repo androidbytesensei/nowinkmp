@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.feature.topic
 
+import androidx.lifecycle.SavedStateHandle
 import com.google.samples.apps.nowinandroid.core.data.repository.CompositeUserNewsResourceRepository
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableTopic
 import com.google.samples.apps.nowinandroid.core.model.data.NewsResource
@@ -23,7 +24,6 @@ import com.google.samples.apps.nowinandroid.core.model.data.Topic
 import com.google.samples.apps.nowinandroid.core.testing.repository.TestNewsRepository
 import com.google.samples.apps.nowinandroid.core.testing.repository.TestTopicsRepository
 import com.google.samples.apps.nowinandroid.core.testing.repository.TestUserDataRepository
-import com.google.samples.apps.nowinandroid.core.testing.util.MainDispatcherRule
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -32,7 +32,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -42,9 +41,6 @@ import kotlin.test.assertIs
  * https://developer.android.com/kotlin/flow/test#statein
  */
 class TopicViewModelTest {
-
-    @get:Rule
-    val dispatcherRule = MainDispatcherRule()
 
     private val userDataRepository = TestUserDataRepository()
     private val topicsRepository = TestTopicsRepository()
@@ -61,7 +57,9 @@ class TopicViewModelTest {
             userDataRepository = userDataRepository,
             topicsRepository = topicsRepository,
             userNewsResourceRepository = userNewsResourceRepository,
-            topicId = testInputTopics[0].topic.id,
+            savedStateHandle = SavedStateHandle(
+                mapOf("id" to testInputTopics[0].topic.id),
+            )
         )
     }
 

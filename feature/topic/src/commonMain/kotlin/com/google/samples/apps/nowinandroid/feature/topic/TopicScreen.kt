@@ -46,8 +46,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.samples.apps.nowinandroid.core.designsystem.component.DynamicAsyncImage
@@ -66,11 +64,12 @@ import com.google.samples.apps.nowinandroid.core.ui.TrackScreenViewEvent
 import com.google.samples.apps.nowinandroid.core.ui.TrackScrollJank
 import com.google.samples.apps.nowinandroid.core.ui.UserNewsResourcePreviewParameterProvider
 import com.google.samples.apps.nowinandroid.core.ui.userNewsResourceCardItems
-import com.google.samples.apps.nowinandroid.feature.topic.R.string
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.koin.compose.viewmodel.koinViewModel
-import ui.generated.resources.Res
+import topic.generated.resources.Res
+import topic.generated.resources.feature_topic_loading
 import ui.generated.resources.core_ui_back
 
 @Composable
@@ -127,7 +126,7 @@ internal fun TopicScreen(
                 TopicUiState.Loading -> item {
                     NiaLoadingWheel(
                         modifier = modifier,
-                        contentDesc = stringResource(id = string.feature_topic_loading),
+                        contentDesc = stringResource(Res.string.feature_topic_loading),
                     )
                 }
 
@@ -295,7 +294,7 @@ private fun TopicToolbar(
                 Icon(
                     imageVector = NiaIcons.ArrowBack,
                     contentDescription = stringResource(
-                        resource = Res.string.core_ui_back,
+                        resource = ui.generated.resources.Res.string.core_ui_back,
                     ),
                 )
             }
@@ -320,7 +319,7 @@ private fun TopicToolbar(
 
 @DevicePreviews
 @Composable
-fun TopicScreenPopulated(
+private fun TopicScreenPopulated(
     @PreviewParameter(provider = UserNewsResourcePreviewParameterProvider::class)
     userNewsResources: List<UserNewsResource>,
 ) {
@@ -342,7 +341,7 @@ fun TopicScreenPopulated(
 
 @DevicePreviews
 @Composable
-fun TopicScreenLoading() {
+private fun TopicScreenLoading() {
     NiaTheme {
         NiaBackground {
             TopicScreen(
