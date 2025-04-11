@@ -15,8 +15,7 @@
  */
 
 plugins {
-    alias(libs.plugins.nowinandroid.android.feature)
-    alias(libs.plugins.nowinandroid.android.library.compose)
+    alias(libs.plugins.nowinandroid.compose.multiplatform.feature)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
 }
 
@@ -24,12 +23,31 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.feature.settings"
 }
 
-dependencies {
-    implementation(libs.androidx.appcompat)
-    implementation(libs.google.oss.licenses)
-    implementation(projects.core.data)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
 
-    testImplementation(projects.core.testing)
+            implementation(libs.aboutlibraries.core)
+            implementation(libs.aboutlibraries.compose.core)
+            implementation(libs.aboutlibraries.compose.m3)
+        }
 
-    androidTestImplementation(libs.bundles.androidx.compose.ui.test)
+        androidInstrumentedTest.dependencies {
+            implementation(libs.bundles.androidx.compose.ui.test)
+            implementation(projects.core.testing)
+        }
+
+        commonTest.dependencies {
+            implementation(projects.core.testing)
+        }
+    }
+}
+
+compose.resources {
+    publicResClass = true
+    generateResClass = always
+    packageOfResClass = "settings.generated.resources"
 }
