@@ -20,8 +20,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.google.samples.apps.nowinandroid.feature.topic.TopicScreen
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Serializable data class TopicRoute(val id: String)
 
@@ -37,10 +40,15 @@ fun NavGraphBuilder.topicScreen(
     onTopicClick: (String) -> Unit,
 ) {
     composable<TopicRoute> {
+        val route = it.toRoute<TopicRoute>()
         TopicScreen(
             showBackButton = showBackButton,
             onBackClick = onBackClick,
             onTopicClick = onTopicClick,
+            viewModel = koinViewModel(
+                key = route.id,
+                parameters = { parametersOf(route.id) }
+            ),
         )
     }
 }

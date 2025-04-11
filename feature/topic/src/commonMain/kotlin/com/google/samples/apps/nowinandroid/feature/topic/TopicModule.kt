@@ -16,9 +16,12 @@
 
 package com.google.samples.apps.nowinandroid.feature.topic
 
+import com.google.samples.apps.nowinandroid.core.data.di.dataModule
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val TopicModule = module {
+    includes(dataModule)
+
     viewModelOf(::TopicViewModel)
 }
