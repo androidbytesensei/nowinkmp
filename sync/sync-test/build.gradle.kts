@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
 }
 
@@ -22,8 +22,13 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.core.sync.test"
 }
 
-dependencies {
-    implementation(libs.koin.android.test)
-    implementation(projects.core.data)
-    implementation(projects.sync.work)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.data)
+            implementation(projects.sync.work)
+            implementation(libs.koin.core)
+        }
+    }
 }
+
