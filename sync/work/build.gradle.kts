@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.nowinandroid.android.library)
+    alias(libs.plugins.nowinandroid.kotlin.multiplatform.library)
     alias(libs.plugins.nowinandroid.android.library.jacoco)
     alias(libs.plugins.nowinandroid.kotlin.multiplatform.koin)
 }
@@ -26,20 +26,34 @@ android {
     namespace = "com.google.samples.apps.nowinandroid.sync"
 }
 
-dependencies {
-    implementation(libs.androidx.tracing.ktx)
-    implementation(libs.androidx.work.ktx)
-    implementation(libs.koin.androidx.workmanager)
-    implementation(projects.core.analytics)
-    implementation(projects.core.data)
-    implementation(projects.core.notifications)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.analytics)
+            implementation(projects.core.data)
+            implementation(projects.core.notifications)
 
-    prodImplementation(libs.firebase.cloud.messaging)
-    prodImplementation(platform(libs.firebase.bom))
+            implementation(libs.koin.core)
+            implementation(libs.kermit.logging)
+        }
 
-    androidTestImplementation(libs.androidx.work.testing)
-    androidTestImplementation(libs.koin.android.test)
-    androidTestImplementation(libs.kotlinx.coroutines.guava)
-    androidTestImplementation(projects.core.testing)
-    androidTestImplementation(libs.androidx.test.monitor)
+        androidMain.dependencies {
+            implementation(libs.androidx.tracing.ktx)
+            implementation(libs.androidx.work.ktx)
+            implementation(libs.koin.androidx.workmanager)
+
+
+            implementation(libs.firebase.cloud.messaging)
+            implementation(project.dependencies.platform(libs.firebase.bom))
+        }
+
+        androidInstrumentedTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.androidx.work.testing)
+            implementation(libs.koin.android.test)
+            implementation(libs.kotlinx.coroutines.guava)
+            implementation(projects.core.testing)
+            implementation(libs.androidx.test.monitor)
+        }
+    }
 }
