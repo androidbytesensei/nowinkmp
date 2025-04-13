@@ -45,9 +45,13 @@ dependencyResolutionManagement {
 rootProject.name = "nowinandroid"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":app")
+
+include(":nia-android")
+include(":nia-shared")
+
 include(":app-nia-catalog")
 include(":benchmarks")
+
 include(":core:analytics")
 include(":core:common")
 include(":core:data")

@@ -53,7 +53,7 @@ android {
         }
     }
 
-    targetProjectPath = ":app"
+    targetProjectPath = ":nia-android"
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 

@@ -71,18 +71,10 @@ android {
 }
 
 dependencies {
-    implementation(projects.feature.interests)
-    implementation(projects.feature.foryou)
-    implementation(projects.feature.bookmarks)
-    implementation(projects.feature.topic)
-    implementation(projects.feature.search)
-    implementation(projects.feature.settings)
+    implementation(projects.niaShared)
 
-    implementation(projects.core.common)
-    implementation(projects.core.ui)
     implementation(projects.core.designsystem)
     implementation(projects.core.data)
-    implementation(projects.core.model)
     implementation(projects.core.analytics)
     implementation(projects.sync.work)
 
@@ -110,6 +102,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.coil)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.metrics)
 
     debugImplementation(libs.androidx.compose.ui.testManifest)
     debugImplementation(projects.uiTestHiltManifest)
