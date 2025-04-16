@@ -31,6 +31,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(compose.runtime)
             implementation(compose.ui)
+            implementation(libs.kermit.logging)
         }
     }
 }

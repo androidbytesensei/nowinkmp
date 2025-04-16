@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.core.analytics
 
-import android.util.Log
+import co.touchlab.kermit.Logger
 
 private const val TAG = "StubAnalyticsHelper"
 
@@ -26,6 +26,6 @@ private const val TAG = "StubAnalyticsHelper"
  */
 internal class StubAnalyticsHelper : AnalyticsHelper {
     override fun logEvent(event: AnalyticsEvent) {
-        Log.d(TAG, "Received analytics event: $event")
+        Logger.e(TAG, null,"Received analytics event: $event")
     }
 }

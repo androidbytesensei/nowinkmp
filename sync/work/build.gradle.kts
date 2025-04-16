@@ -34,6 +34,7 @@ kotlin {
             implementation(projects.core.notifications)
 
             implementation(libs.koin.core)
+            implementation(libs.koin.test)
             implementation(libs.kermit.logging)
         }
 

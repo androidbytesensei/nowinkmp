@@ -16,17 +16,30 @@
 
 package com.google.samples.apps.nowinandroid.sync.di
 
+import com.google.samples.apps.nowinandroid.core.data.Synchronizer
+import com.google.samples.apps.nowinandroid.core.data.di.dataModule
 import com.google.samples.apps.nowinandroid.core.data.util.SyncManager
-import com.google.samples.apps.nowinandroid.sync.status.StubSyncManager
+import com.google.samples.apps.nowinandroid.core.network.NiaDispatchers
+import com.google.samples.apps.nowinandroid.core.network.asQualifier
 import com.google.samples.apps.nowinandroid.sync.status.StubSyncSubscriber
+import com.google.samples.apps.nowinandroid.sync.status.SyncNetworkManager
 import com.google.samples.apps.nowinandroid.sync.status.SyncSubscriber
+import com.google.samples.apps.nowinandroid.sync.workers.SyncNetworkData
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 actual val syncModule: Module
     get() = module {
-        singleOf(::StubSyncManager) bind SyncManager::class
+        includes(dataModule)
+        single<CoroutineDispatcher>{ get(NiaDispatchers.IO.asQualifier) }
+        single<CoroutineScope>{ get(named("ApplicationScope")) }
+
+        singleOf(::SyncNetworkData) bind Synchronizer::class
+        singleOf(::SyncNetworkManager) bind SyncManager::class
         singleOf(::StubSyncSubscriber) bind SyncSubscriber::class
     }
