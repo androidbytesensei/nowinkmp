@@ -17,10 +17,7 @@
 package com.google.samples.apps.nowinandroid.core.analytics.di
 
 import com.google.samples.apps.nowinandroid.core.analytics.AnalyticsHelper
-import com.google.samples.apps.nowinandroid.core.analytics.FirebaseAnalyticsHelper
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.analytics.FirebaseAnalytics
-import dev.gitlive.firebase.analytics.analytics
+import com.google.samples.apps.nowinandroid.core.analytics.StubAnalyticsHelper
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -28,6 +25,5 @@ import org.koin.dsl.module
 
 actual val analyticsModule: Module
     get() = module {
-        single<FirebaseAnalytics> { Firebase.analytics }
-        singleOf(::FirebaseAnalyticsHelper) bind AnalyticsHelper::class
+        singleOf(::StubAnalyticsHelper) bind AnalyticsHelper::class
     }
