@@ -48,6 +48,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":nia-android")
 include(":nia-shared")
+include(":nia-desktop")
 
 include(":app-nia-catalog")
 include(":benchmarks")
