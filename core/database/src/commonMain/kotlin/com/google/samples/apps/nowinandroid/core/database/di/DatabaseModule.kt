@@ -17,6 +17,7 @@
 package com.google.samples.apps.nowinandroid.core.database.di
 
 import app.cash.sqldelight.db.QueryResult
+import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.db.SqlSchema
 import com.google.samples.apps.nowinandroid.core.database.NiaDatabase
 import com.google.samples.apps.nowinandroid.core.database.dao.NewsResourceDao
@@ -43,11 +44,11 @@ internal val schemaModule = module {
 }
 
 internal val dbModule = module {
-    single { NiaDatabase(get()) }
+    single<NiaDatabase>{ NiaDatabase(get(SqlDriver::class)) }
 }
 
 val daosModule = module {
-    includes(dispatchersModule)
+    includes(dispatchersModule, dbModule)
     single<CoroutineDispatcher> { get(NiaDispatchers.IO.asQualifier) }
 
     singleOf(::TopicDaoImpl) bind TopicDao::class
@@ -59,9 +60,9 @@ val daosModule = module {
 
 val databaseModule = module {
     includes(
-        schemaModule,
         driverModule,
         dbModule,
+        schemaModule,
         daosModule,
     )
 }

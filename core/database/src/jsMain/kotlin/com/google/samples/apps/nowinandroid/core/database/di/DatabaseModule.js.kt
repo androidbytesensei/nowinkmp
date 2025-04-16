@@ -16,27 +16,20 @@
 
 package com.google.samples.apps.nowinandroid.core.database.di
 
-import app.cash.sqldelight.db.QueryResult
 import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.db.SqlSchema
 import app.cash.sqldelight.driver.worker.WebWorkerDriver
+import com.google.samples.apps.nowinandroid.core.database.NiaDatabase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.w3c.dom.Worker
 
 internal actual val driverModule: Module
     get() = module {
-        factory { (schema: SqlSchema<QueryResult.AsyncValue<Unit>>) ->
-            object {
-                suspend fun create(): SqlDriver {
-                    val driver = WebWorkerDriver(
-                        Worker(
-                            js("""new URL("@cashapp/sqldelight-sqljs-worker/sqljs.worker.js", import.meta.url)"""),
-                        ),
-                    )
-                    schema.create(driver).await()
-                    return driver
-                }
-            }
+        single<SqlDriver>{
+            WebWorkerDriver(
+                Worker(
+                    js("""new URL("@cashapp/sqldelight-sqljs-worker/sqljs.worker.js", import.meta.url)"""),
+                ),
+            ).also { NiaDatabase.Schema.create(it) }
         }
     }

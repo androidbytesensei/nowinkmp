@@ -16,11 +16,9 @@
 
 package com.google.samples.apps.nowinandroid.core.database.di
 
-import app.cash.sqldelight.db.QueryResult.AsyncValue
 import app.cash.sqldelight.db.SqlDriver
-import app.cash.sqldelight.db.SqlSchema
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import kotlinx.coroutines.runBlocking
+import com.google.samples.apps.nowinandroid.core.database.NiaDatabase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import java.util.Properties
@@ -28,15 +26,11 @@ import java.util.Properties
 internal actual val driverModule: Module
     get() = module {
         single<SqlDriver> {
-            val schema: SqlSchema<AsyncValue<Unit>> = get<SqlSchema<AsyncValue<Unit>>>()
             JdbcSqliteDriver(
-                url = JdbcSqliteDriver.IN_MEMORY,
+                url = "jdbc:sqlite:nia-database.db",
                 properties = Properties().apply { put("foreign_keys", "true") },
-            )
-                .also {
-                    runBlocking {
-                        schema.create(it).await()
-                    }
-                }
+            ).also {
+                NiaDatabase.Schema.create(it)
+            }
         }
     }
