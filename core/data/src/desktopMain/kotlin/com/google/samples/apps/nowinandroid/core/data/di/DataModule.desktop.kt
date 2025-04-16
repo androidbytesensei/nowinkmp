@@ -20,15 +20,13 @@ import com.google.samples.apps.nowinandroid.core.data.util.NetworkMonitor
 import com.google.samples.apps.nowinandroid.core.data.util.TimeZoneMonitor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.TimeZone
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 internal actual val networkMonitorModule: Module
     get() = module {
-        single {
-            runBlocking {  }
+        single<NetworkMonitor> {
             object : NetworkMonitor {
                 override val isOnline: Flow<Boolean>
                     get() = flowOf(true)
@@ -38,7 +36,7 @@ internal actual val networkMonitorModule: Module
 
 internal actual val timeZoneMonitorModule: Module
     get() = module {
-        single {
+        single<TimeZoneMonitor> {
             object : TimeZoneMonitor {
                 override val currentTimeZone: Flow<TimeZone>
                     get() = flowOf(TimeZone.currentSystemDefault())

@@ -17,9 +17,10 @@
 package com.google.samples.apps.nowinandroid.core.data.util
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext
 
 actual fun <T> runBlockingExt(
     context: CoroutineContext,
     block: suspend CoroutineScope.() -> T
-): T = runBlockingExt(context, block)
+): T = runBlocking(context, block)
